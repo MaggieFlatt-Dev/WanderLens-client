@@ -1,15 +1,15 @@
 import { NavLink, useNavigate } from "react-router-dom"
-import "./Navbar.css"
 
 export const NavBar = () => {
     const navigate = useNavigate()
     return (
-        <ul className="navbar pb-10">
+        <ul className="flex items-center gap-4 px-6 py-4 bg-white shadow list-none">
             {
                 (localStorage.getItem("WanderLens_token") !== null) ?
                 <>
-                    <li className="navbar__item">
+                    <li>
                         <button
+                            className="text-gray-700 hover:text-blue-600"
                             onClick={() => {
                                 localStorage.removeItem("WanderLens_token")
                                 navigate('/login')
@@ -18,11 +18,11 @@ export const NavBar = () => {
                     </li>
                 </> :
                 <>
-                    <li className="navbar__item">
-                        <NavLink  to={"/login"}>Login</NavLink>
+                    <li>
+                        <NavLink className="text-gray-700 hover:text-blue-600" to={"/login"}>Login</NavLink>
                     </li>
-                    <li className="navbar__item">
-                        <NavLink to={"/register"}>Register</NavLink>
+                    <li>
+                        <NavLink className="text-gray-700 hover:text-blue-600" to={"/register"}>Register</NavLink>
                     </li>
                 </>
             }
