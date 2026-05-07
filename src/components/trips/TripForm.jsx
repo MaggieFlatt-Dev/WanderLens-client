@@ -81,10 +81,10 @@ export const TripForm = ({ isOpen, onClose }) => {
             ))}
           </select>
         </fieldset>
-        <div className="flex flex-row items-center items-end gap-x-30">
+        <div className="flex flex-row items-center items-end gap-x-35">
           <fieldset className="relative">
             <label
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium text-gray-700 pl-5"
               htmlFor="inputColorPicker"
             >
               Color: <span className="text-red-500">*</span>
@@ -113,7 +113,7 @@ export const TripForm = ({ isOpen, onClose }) => {
               className="text-sm font-medium text-gray-700"
               htmlFor="inputStartDate"
             >
-              Select Start Date: <span className="text-red-500">*</span>
+              Start Date: <span className="text-red-500">*</span>
             </label>
             <DatePicker
               className="ml-2 border border-gray-300 rounded w-25"
