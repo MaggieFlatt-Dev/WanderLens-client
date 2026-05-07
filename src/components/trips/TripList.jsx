@@ -9,8 +9,8 @@ export const TripList = () => {
       <h2>Trip List</h2>
       <button className="border border-gray-300 rounded px-3 py-2 text-sm" onClick={() => setModalIsOpen(true)}>
       + Create Trip
-      <TripForm isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)} />
       </button>
+      <TripForm isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)} />
     </div>
   );
 };
