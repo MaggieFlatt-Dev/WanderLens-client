@@ -22,14 +22,28 @@ export const TripList = () => {
       + New Trip
       </button>
       <TripForm isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)} onTripCreated={fetchTrips} />
-        </div>
-      <div>
-         {trips.map((trip) => (
-              <div key={trip.id} value={trip.id}>
-             {trip.name}
-             {trip.description}
+      </div>
+      <div className="flex justify-center border border-dashed rounded-md p-10 mt-15"> Place Holder for Map </div>
+      <div className="mt-10">
+        {trips.length ? (
+          trips.map((trip) => (
+            <div className="flex border rounded-md p-2 mt-6" key={trip.id} value={trip.id}>
+              <div className="w-8 h-8 rounded-full"
+                style={{backgroundColor: trip.color}}
+              />
+              <div className="flex flex-col">
+                <div className="text-xl pl-4">
+                  {trip.name}
+                </div>
+                <div className="flex pl-4 pt-2 text-sm">
+                  {trip.trip_type?.name}  |  Started {new Date(trip.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} |
+                </div>
               </div>
-            ))}
+            </div>
+          ))
+        ) : (
+          <p>Welcome! Create your first trip to get started</p>
+        )}
       </div>
     </div>
   );
