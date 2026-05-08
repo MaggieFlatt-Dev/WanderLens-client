@@ -16,8 +16,8 @@ export const TripList = () => {
 
   return (
     <div>
-      <div className="flex flex-row ">
-      <h2>My Trips</h2>
+      <div className="flex justify-between">
+      <h2 className="text-2xl">My Trips</h2>
       <button className="border border-gray-300 rounded px-3 py-2 text-sm" onClick={() => setModalIsOpen(true)}>
       + New Trip
       </button>
