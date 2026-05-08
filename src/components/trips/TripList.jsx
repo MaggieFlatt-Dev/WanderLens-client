@@ -44,7 +44,7 @@ export const TripList = () => {
             </div>
           ))
         ) : (
-          <p>Welcome! Create your first trip to get started</p>
+          <p className="flex justify-center text-4xl">Welcome! Create your first trip to get started</p>
         )}
       </div>
     </div>
