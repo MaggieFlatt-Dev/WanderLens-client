@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react-color": "^2.19.3",
+    "react-datepicker": "^9.1.0",
+    "react-dom": "^19.2.5",
+    "react-modal": "^3.16.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
