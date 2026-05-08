@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TripForm } from './TripForm';
 import { getTrips } from '../services/tripServices';
+import { ChevronRightIcon } from '@heroicons/react/16/solid';
 
 export const TripList = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -28,7 +29,7 @@ export const TripList = () => {
         {trips.length ? (
           trips.map((trip) => (
             <div className="flex border rounded-md p-2 mt-6" key={trip.id} value={trip.id}>
-              <div className="w-8 h-8 rounded-full"
+              <div className="w-8 h-8 rounded-full mt-2"
                 style={{backgroundColor: trip.color}}
               />
               <div className="flex flex-col">
@@ -39,6 +40,7 @@ export const TripList = () => {
                   {trip.trip_type?.name}  |  Started {new Date(trip.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} |
                 </div>
               </div>
+              <ChevronRightIcon className="ml-auto w-5 h-5 self-center text-gray-400" />
             </div>
           ))
         ) : (
