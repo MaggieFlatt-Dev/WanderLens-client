@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { SwatchesPicker } from "react-color";
 import { createTrip } from "../services/tripServices";
 
-export const TripForm = ({ isOpen, onClose }) => {
+export const TripForm = ({ isOpen, onClose, onTripCreated }) => {
   const [tripTypes, setTripTypes] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedColor, setSelectedColor] = useState();
@@ -47,7 +47,10 @@ export const TripForm = ({ isOpen, onClose }) => {
       color: selectedColor.hex,
       is_private: isPrivate,
     }
-    createTrip(newTrip).then(onClose())
+    createTrip(newTrip).then(() => {
+      onTripCreated()
+      handleCancel()
+    })
     }
   
   return (
