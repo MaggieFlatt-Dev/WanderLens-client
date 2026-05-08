@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { TripForm } from './TripForm';
 import { getTrips } from '../services/tripServices';
 import { ChevronRightIcon } from '@heroicons/react/16/solid';
+import { Link } from 'react-router-dom';
 
 export const TripList = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -28,6 +29,7 @@ export const TripList = () => {
       <div className="mt-10">
         {trips.length ? (
           trips.map((trip) => (
+            <Link to={`api/trips/${trip.id}`}>
             <div className="flex border rounded-md p-2 mt-6" key={trip.id} value={trip.id}>
               <div className="w-8 h-8 rounded-full mt-2"
                 style={{backgroundColor: trip.color}}
@@ -41,7 +43,8 @@ export const TripList = () => {
                 </div>
               </div>
               <ChevronRightIcon className="ml-auto w-5 h-5 self-center text-gray-400" />
-            </div>
+              </div>
+              </Link>
           ))
         ) : (
           <p className="flex justify-center text-4xl">Welcome! Create your first trip to get started</p>
