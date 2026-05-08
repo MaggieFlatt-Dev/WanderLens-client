@@ -16,3 +16,11 @@ export const createTrip = (newTrip) => {
         body: JSON.stringify(newTrip)
     }).then(res => res.json())
 }
+
+export const getTripById = (id) => {
+    return fetch(`http://localhost:8000/api/trips/${id}`, {
+        headers: {
+            Authorization: "Token " + JSON.parse(localStorage.getItem("WanderLens_token")).token,
+        }, 
+    }).then((res => res.json()))
+ }
