@@ -29,7 +29,7 @@ export const TripList = () => {
       <div className="mt-10">
         {trips.length ? (
           trips.map((trip) => (
-            <Link to={`api/trips/${trip.id}`} key={trip.id}>
+            <Link to={`/trips/${trip.id}`} key={trip.id}>
             <div className="flex border rounded-md p-2 mt-6" value={trip.id}>
               <div className="w-8 h-8 rounded-full mt-2"
                 style={{backgroundColor: trip.color}}
