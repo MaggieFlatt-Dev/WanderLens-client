@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getTripById } from "../services/tripServices";
-import { ChevronRightIcon } from "@heroicons/react/16/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 
 export const TripDetails = () => {
   //set state for trip, useParams for tripId
@@ -14,6 +14,8 @@ export const TripDetails = () => {
 
   return (
     <div>
+      <Link to={`/`} className="flex text-md mb-10">
+        <ChevronLeftIcon className="w-5 h-5 text-gray-400"/>Back to My Trips</Link>
       <div className="flex flex-col pl-2 pb-8 border rounded-md ">
         <div className="flex pt-2 text-2xl">{trip.name}
         <div className="flex ml-auto m-2 gap-2 text-sm">
