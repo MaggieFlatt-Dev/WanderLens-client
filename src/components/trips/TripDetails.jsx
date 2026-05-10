@@ -42,11 +42,12 @@ export const TripDetails = () => {
         />
         <div className= "flex flex-col text-sm">
           <p>{trip.trip_type?.name} |{" "}
-          {new Date(trip.start_date).toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
+              {new Date(trip.start_date).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })} |{" "}
+              {trip.is_private ? "Private" : "Public"}
             </p>
             <div className="pt-2">{trip.description}</div>
             </div>
