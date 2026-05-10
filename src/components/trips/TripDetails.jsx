@@ -9,7 +9,7 @@ export const TripDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  //catch and redirect if trip id does not belong to user
+  //catch and redirect if trip id does not belong to user or is not found
   useEffect(() => {
     getTripById(id).then((data) => {
       if (data.reason === "Not found") {
