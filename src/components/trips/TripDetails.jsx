@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getTripById } from "../services/tripServices";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 
@@ -7,10 +7,18 @@ export const TripDetails = () => {
   //set state for trip, useParams for tripId
   const [trip, setTrip] = useState({});
   const { id } = useParams();
+  const navigate = useNavigate();
 
+  //catch and redirect if trip id does not belong to user
   useEffect(() => {
-    getTripById(id).then(setTrip);
-  }, [id]);
+    getTripById(id).then((data) => {
+      if (data.reason === "Not found") {
+        navigate('/');
+      } else {
+        setTrip(data)
+      }
+    })
+  }, [id, navigate])
 
   return (
     <div>
@@ -48,7 +56,10 @@ export const TripDetails = () => {
         {" "}
         Place Holder for Map{" "}
       </div>
-      <div className="mt-10 mb-4">Stops ({trip.stops?.length})</div>
+      <div className="flex flex-row mt-10 mb-4">
+      <div className="">Stops ({trip.stops?.length})</div>
+        <button className="border rounded-md px-4 ml-auto">+ Add Stop</button>
+        </div>
       {trip.stops?.map((stop) => (
         <Link to={`stops/${stop.id}`} key={stop.id}>
           <div key={stop.id} className="flex flex-col border rounded-md mb-4">
@@ -58,7 +69,7 @@ export const TripDetails = () => {
                 style={{ backgroundColor: trip.color }}
               />
               <div>
-                <p className="ml-2">{stop.name}</p>
+                <p className="ml-2 font-semibold">{stop.name}</p>
                 <p className="text-sm pl-4">
                   {stop.city}, {stop.country} -{" "}
                   {new Date(stop.visited_date).toLocaleDateString("en-US", {
@@ -75,8 +86,8 @@ export const TripDetails = () => {
                   </p>
                 ))}
               </div>
-              <ChevronRightIcon className="w-5 h-5 text-gray-400" />
             </div>
+              <ChevronRightIcon className="w-5 h-5 ml-auto mb-2 text-gray-400" />
           </div>
         </Link>
       ))}
