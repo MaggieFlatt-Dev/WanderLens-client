@@ -6,12 +6,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import { SwatchesPicker } from "react-color";
 import { createTrip } from "../services/tripServices";
 
-export const TripForm = ({ isOpen, onClose, onTripCreated }) => {
+export const TripForm = ({ isOpen, onClose, onTripCreated, tripToEdit }) => {
+  const isEditMode = Boolean(tripToEdit);
   const [tripTypes, setTripTypes] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedColor, setSelectedColor] = useState();
+  const [selectedDate, setSelectedDate] = useState(tripToEdit?.start_date ? new Date(tripToEdit.start_date) : null);
+  const [selectedColor, setSelectedColor] = useState(tripToEdit?.color ? {hex: tripToEdit.color} : undefined);
+  const [isPrivate, setIsPrivate] = useState(tripToEdit?.is_private || false);
   const [colorPickerIsOpen, setColorPickerIsOpen] = useState(false);
-  const [isPrivate, setIsPrivate] = useState(false);
 
   useEffect(() => {
     getTripTypes().then(setTripTypes);
@@ -33,7 +34,7 @@ export const TripForm = ({ isOpen, onClose, onTripCreated }) => {
     onClose()
   }
 
-  const handleCreateTrip = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     if (!selectedColor) {
       alert("Please select a color for your trip")
@@ -61,7 +62,7 @@ export const TripForm = ({ isOpen, onClose, onTripCreated }) => {
       ariaHideApp={false}
     >
       <h2 className="text-2xl font-bold mb-4">Create New Trip</h2>
-      <form className="flex flex-col gap-4" onSubmit={handleCreateTrip}>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
             className="text-sm font-medium text-gray-700"
@@ -72,6 +73,7 @@ export const TripForm = ({ isOpen, onClose, onTripCreated }) => {
           <input
             type="text"
             id="inputTitle"
+            defaultValue={tripToEdit?.name || ""}
             className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="e.g. Italy 2026"
             required
@@ -87,6 +89,7 @@ export const TripForm = ({ isOpen, onClose, onTripCreated }) => {
           </div>
           <textarea
             id="inputDescription"
+            defaultValue={tripToEdit?.description || ""}
             className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Trip Description"
           />
@@ -100,6 +103,7 @@ export const TripForm = ({ isOpen, onClose, onTripCreated }) => {
           </div>
           <select
             id="inputTripType"
+            defaultValue={String(tripToEdit?.trip_type?.id || "")}
             className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           >
