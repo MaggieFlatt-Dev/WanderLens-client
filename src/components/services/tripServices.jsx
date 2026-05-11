@@ -26,12 +26,12 @@ export const getTripById = (id) => {
 }
  
 export const updateTrip = (id, tripData) => {
-    return fetch('http://localhost:8000/trips/${id}', {
+    return fetch(`http://localhost:8000/api/trips/${id}`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
             Authorization: "Token " + JSON.parse(localStorage.getItem("WanderLens_token")).token,
         },
         body: JSON.stringify(tripData)
-    }).then(res => res.json())
+    })
  }
