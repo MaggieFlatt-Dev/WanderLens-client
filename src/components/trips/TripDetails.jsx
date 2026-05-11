@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getTripById } from "../services/tripServices";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
+import { TripForm } from "./TripForm";
 
 export const TripDetails = () => {
   //set state for trip, useParams for tripId
   const [trip, setTrip] = useState({});
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -20,6 +22,12 @@ export const TripDetails = () => {
     })
   }, [id, navigate])
 
+  const refetchTrip = () => {
+    getTripById(id).then(setTrip)
+  };
+
+  if (!trip) return <p>Loading...</p>;
+
   return (
     <div>
       <Link to={`/`} className="flex text-md mb-10">
@@ -28,7 +36,7 @@ export const TripDetails = () => {
         <div className="flex pt-2 text-2xl">{trip.name}
         <div className="flex ml-auto m-2 gap-2 text-sm">
         <div className="border rounded-md px-4">
-          <button> Edit</button>
+              <button onClick={() => setIsEditModalOpen(true)}> Edit</button>
           </div>
         <div className="border rounded-md px-4">
           <button>Delete</button>
@@ -92,6 +100,12 @@ export const TripDetails = () => {
           </div>
         </Link>
       ))}
+      <TripForm
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onTripSaved={refetchTrip}
+        tripToEdit={trip}
+      />
     </div>
   );
 };
