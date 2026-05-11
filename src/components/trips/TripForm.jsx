@@ -18,6 +18,19 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
     getTripTypes().then(setTripTypes);
   }, []);
 
+  useEffect(() => {
+    if (tripToEdit) {
+      setSelectedDate(tripToEdit?.start_date ? new Date(tripToEdit.start_date) : null);
+      setSelectedColor(tripToEdit?.color ? { hex: tripToEdit.color } : undefined);
+      setColorPickerIsOpen(false)
+      setIsPrivate(tripToEdit?.is_private || false)
+    } else {
+      setSelectedDate(null);
+      setSelectedColor(undefined);
+      setIsPrivate(false)
+     }
+   }, [tripToEdit])
+
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -67,7 +80,7 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
       ariaHideApp={false}
     >
       <h2 className="text-2xl font-bold mb-4">{isEditMode ? "Edit Trip" : "Create New Trip"}</h2>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-4" key={tripToEdit?.id || 'new'} onSubmit={handleSubmit}>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
             className="text-sm font-medium text-gray-700"
@@ -108,7 +121,7 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
           </div>
           <select
             id="inputTripType"
-            defaultValue={String(tripToEdit?.trip_type?.id || "")}
+            defaultValue={tripToEdit?.trip_type?.id || ""}
             className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           >
