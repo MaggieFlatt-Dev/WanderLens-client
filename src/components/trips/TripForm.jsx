@@ -6,9 +6,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import { SwatchesPicker } from "react-color";
 import { createTrip, updateTrip } from "../services/tripServices";
 
+// tripToEdit is only passed when editing an existing trip — its presence drives edit vs. create mode
 export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
+  // if tripToEdit was passed, we're editing; if not, we're creating
   const isEditMode = Boolean(tripToEdit);
   const [tripTypes, setTripTypes] = useState([]);
+  // these three fields are controlled state because they can't be read from e.target like a normal input
   const [selectedDate, setSelectedDate] = useState(tripToEdit?.start_date ? new Date(tripToEdit.start_date) : null);
   const [selectedColor, setSelectedColor] = useState(tripToEdit?.color ? {hex: tripToEdit.color} : undefined);
   const [isPrivate, setIsPrivate] = useState(tripToEdit?.is_private || false);
@@ -18,6 +21,7 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
     getTripTypes().then(setTripTypes);
   }, []);
 
+  // when tripToEdit changes (e.g. user opens a different trip's edit modal), re-sync controlled state
   useEffect(() => {
     if (tripToEdit) {
       setSelectedDate(tripToEdit?.start_date ? new Date(tripToEdit.start_date) : null);
@@ -25,6 +29,7 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
       setColorPickerIsOpen(false)
       setIsPrivate(tripToEdit?.is_private || false)
     } else {
+      // reset everything when switching to create mode
       setSelectedDate(null);
       setSelectedColor(undefined);
       setIsPrivate(false)
@@ -36,9 +41,10 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
   };
 
   const handleColorChange = (color) => {
-      setSelectedColor(color); 
+      setSelectedColor(color);
 };
 
+  // resets controlled fields back to the saved values and closes the modal
   const handleCancel = () => {
     setSelectedDate(tripToEdit?.start_date ? new Date(tripToEdit.start_date) : null);
     setSelectedColor(tripToEdit?.color ? { hex: tripToEdit.color } : undefined);
@@ -53,6 +59,8 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
       alert("Please select a color for your trip")
       return
     }
+    // uncontrolled inputs (name, description, trip type) are read directly from the form via e.target
+    // controlled inputs (date, color, isPrivate) come from state
     const tripData = {
       trip_type_id: e.target.inputTripType.value,
       name: e.target.inputTitle.value,
@@ -62,16 +70,18 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
       is_private: isPrivate,
     };
 
+    // same form handles both create and edit — which service call to make depends on isEditMode
     const apiCall = isEditMode
       ? updateTrip(tripToEdit.id, tripData)
       : createTrip(tripData);
-    
+
+    // after save: tell the parent to re-fetch so it shows fresh data, then close the modal
     apiCall.then(() => {
       onTripSaved()
       handleCancel()
     })
     }
-  
+
   return (
     <ReactModal
       className="custom-small-modal"
@@ -80,6 +90,7 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
       ariaHideApp={false}
     >
       <h2 className="text-2xl font-bold mb-4">{isEditMode ? "Edit Trip" : "Create New Trip"}</h2>
+      {/* key resets uncontrolled inputs when switching between trips — without it defaultValue won't update */}
       <form className="flex flex-col gap-4" key={tripToEdit?.id || 'new'} onSubmit={handleSubmit}>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
@@ -183,6 +194,7 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
           >
             Make this trip private?
           </div>
+          {/* checkbox is controlled so its checked state stays in sync with isPrivate */}
           <input
             className="ml-5"
             type="checkbox"
@@ -210,4 +222,3 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
     </ReactModal>
   );
 };
-
