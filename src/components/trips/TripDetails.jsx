@@ -2,16 +2,20 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getTripById } from "../services/tripServices";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
+import { TripForm } from "./TripForm";
 
 export const TripDetails = () => {
-  //set state for trip, useParams for tripId
   const [trip, setTrip] = useState({});
+  // controls whether the edit modal is visible set to false so it doesn't show on mount
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  // useParams to get the :id
   const { id } = useParams();
   const navigate = useNavigate();
 
-  //catch and redirect if trip id does not belong to user or is not found
+  // fetch the trip when the component loads or the id in the URL changes
   useEffect(() => {
     getTripById(id).then((data) => {
+      // if the backend says the trip doesn't exist (or belongs to another user), send them home
       if (data.reason === "Not found") {
         navigate('/');
       } else {
@@ -19,6 +23,13 @@ export const TripDetails = () => {
       }
     })
   }, [id, navigate])
+
+  // called by TripForm after a successful save to refresh the trip data on this page
+  const refetchTrip = () => {
+    getTripById(id).then(setTrip)
+  };
+
+  if (!trip) return <p>Loading...</p>;
 
   return (
     <div>
@@ -28,7 +39,8 @@ export const TripDetails = () => {
         <div className="flex pt-2 text-2xl">{trip.name}
         <div className="flex ml-auto m-2 gap-2 text-sm">
         <div className="border rounded-md px-4">
-          <button> Edit</button>
+              {/* sets isEditModalOpen to true, which triggers the TripForm at the bottom to open */}
+              <button onClick={() => setIsEditModalOpen(true)}> Edit</button>
           </div>
         <div className="border rounded-md px-4">
           <button>Delete</button>
@@ -47,6 +59,7 @@ export const TripDetails = () => {
                 day: "numeric",
                 year: "numeric",
               })} |{" "}
+              {/* ternary: if is_private is true show "Private", otherwise show "Public" */}
               {trip.is_private ? "Private" : "Public"}
             </p>
             <div className="pt-2">{trip.description}</div>
@@ -61,6 +74,7 @@ export const TripDetails = () => {
       <div className="">Stops ({trip.stops?.length})</div>
         <button className="border rounded-md px-4 ml-auto">+ Add Stop</button>
         </div>
+      {/* relative path "stops/:id" resolves to /trips/:tripId/stops/:stopId */}
       {trip.stops?.map((stop) => (
         <Link to={`stops/${stop.id}`} key={stop.id}>
           <div key={stop.id} className="flex flex-col border rounded-md mb-4">
@@ -92,6 +106,13 @@ export const TripDetails = () => {
           </div>
         </Link>
       ))}
+      {/* TripForm doubles as create and edit — passing tripToEdit puts it in edit mode */}
+      <TripForm
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onTripSaved={refetchTrip}
+        tripToEdit={trip}
+      />
     </div>
   );
 };

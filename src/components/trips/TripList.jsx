@@ -23,7 +23,7 @@ export const TripList = () => {
       <button className="border border-gray-300 rounded px-3 py-2 text-sm" onClick={() => setModalIsOpen(true)}>
       + New Trip
       </button>
-      <TripForm isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)} onTripCreated={fetchTrips} />
+      <TripForm isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)} onTripSaved={fetchTrips} />
       </div>
       <div className="flex justify-center border border-dashed rounded-md p-10 mt-15"> Place Holder for Map </div>
       <div className="mt-10">

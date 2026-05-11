@@ -6,14 +6,14 @@ export const getTrips = () => {
     }).then((res) => res.json())
  }
 
-export const createTrip = (newTrip) => {
+export const createTrip = (tripData) => {
     return fetch("http://localhost:8000/api/trips", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
              Authorization: "Token " + JSON.parse(localStorage.getItem("WanderLens_token")).token,
         },
-        body: JSON.stringify(newTrip)
+        body: JSON.stringify(tripData)
     }).then(res => res.json())
 }
 
@@ -23,4 +23,15 @@ export const getTripById = (id) => {
             Authorization: "Token " + JSON.parse(localStorage.getItem("WanderLens_token")).token,
         }, 
     }).then((res => res.json()))
+}
+ 
+export const updateTrip = (id, tripData) => {
+    return fetch(`http://localhost:8000/api/trips/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Token " + JSON.parse(localStorage.getItem("WanderLens_token")).token,
+        },
+        body: JSON.stringify(tripData)
+    })
  }
