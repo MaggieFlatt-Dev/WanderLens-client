@@ -4,9 +4,9 @@ import { getTripTypes } from "../services/tripTypeServices";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { SwatchesPicker } from "react-color";
-import { createTrip } from "../services/tripServices";
+import { createTrip, updateTrip } from "../services/tripServices";
 
-export const TripForm = ({ isOpen, onClose, onTripCreated, tripToEdit }) => {
+export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
   const isEditMode = Boolean(tripToEdit);
   const [tripTypes, setTripTypes] = useState([]);
   const [selectedDate, setSelectedDate] = useState(tripToEdit?.start_date ? new Date(tripToEdit.start_date) : null);
@@ -27,10 +27,10 @@ export const TripForm = ({ isOpen, onClose, onTripCreated, tripToEdit }) => {
 };
 
   const handleCancel = () => {
-    setSelectedDate(null)
-    setSelectedColor(undefined)
+    setSelectedDate(tripToEdit?.start_date ? new Date(tripToEdit.start_date) : null);
+    setSelectedColor(tripToEdit?.color ? { hex: tripToEdit.color } : undefined);
     setColorPickerIsOpen(false)
-    setIsPrivate(false)
+    setIsPrivate(tripToEdit?.is_private || false)
     onClose()
   }
 
@@ -40,16 +40,21 @@ export const TripForm = ({ isOpen, onClose, onTripCreated, tripToEdit }) => {
       alert("Please select a color for your trip")
       return
     }
-    const newTrip = {
+    const tripData = {
       trip_type_id: e.target.inputTripType.value,
       name: e.target.inputTitle.value,
       description: e.target.inputDescription.value,
-      start_date: selectedDate ? selectedDate.toISOString().split("T")[0]: null,
+      start_date: selectedDate ? selectedDate.toISOString().split("T")[0] : null,
       color: selectedColor.hex,
       is_private: isPrivate,
-    }
-    createTrip(newTrip).then(() => {
-      onTripCreated()
+    };
+
+    const apiCall = isEditMode
+      ? updateTrip(tripToEdit.id, tripData)
+      : createTrip(tripData);
+    
+    apiCall.then(() => {
+      onTripSaved()
       handleCancel()
     })
     }
@@ -61,7 +66,7 @@ export const TripForm = ({ isOpen, onClose, onTripCreated, tripToEdit }) => {
       onRequestClose={onClose}
       ariaHideApp={false}
     >
-      <h2 className="text-2xl font-bold mb-4">Create New Trip</h2>
+      <h2 className="text-2xl font-bold mb-4">{isEditMode ? "Edit Trip" : "Create New Trip"}</h2>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
@@ -178,7 +183,7 @@ export const TripForm = ({ isOpen, onClose, onTripCreated, tripToEdit }) => {
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Create Trip
+            {isEditMode ? "Save Changes" : "Create Trip"}
           </button>
           <button
             type="button"
