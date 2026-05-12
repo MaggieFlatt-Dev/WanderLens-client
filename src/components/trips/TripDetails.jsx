@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getTripById } from "../services/tripServices";
+import { deleteTrip, getTripById } from "../services/tripServices";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import { TripForm } from "./TripForm";
 import { DeleteDialog } from "../ui/DeleteDialog";
