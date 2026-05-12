@@ -34,4 +34,15 @@ export const updateTrip = (id, tripData) => {
         },
         body: JSON.stringify(tripData)
     })
+}
+ 
+export const deleteTrip = (id) => {
+    return fetch(`http://localhost:8000/api/trips/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Token " + JSON.parse(localStorage.getItem("WanderLens_token")).token,
+        },
+        body: JSON.stringify(id)
+    })
  }

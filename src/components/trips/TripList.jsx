@@ -39,7 +39,7 @@ export const TripList = () => {
                   {trip.name}
                 </div>
                 <div className="flex pl-4 pt-2 text-sm">
-                  {trip.trip_type?.name}  |  Started {new Date(trip.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} |
+                    {trip.trip_type?.name} | {""} Started {new Date(trip.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} | {""} Stops ({trip?.stops.length})
                 </div>
               </div>
               <ChevronRightIcon className="ml-auto w-5 h-5 self-center text-gray-400" />
