@@ -1,6 +1,6 @@
 import ReactModal from "react-modal"
 
-export const deleteDialog = ({
+export const DeleteDialog = ({
   isOpen, onClose, onConfirm, title, message, confirmLabel = "Delete", cancelLabel = "Cancel",
 }) => {
   return (
