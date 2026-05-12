@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { getTripById } from "../services/tripServices";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import { TripForm } from "./TripForm";
+import { DeleteDialog } from "../ui/DeleteDialog";
 
 export const TripDetails = () => {
   const [trip, setTrip] = useState({});
@@ -11,6 +12,7 @@ export const TripDetails = () => {
   // useParams to get the :id
   const { id } = useParams();
   const navigate = useNavigate();
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false)
 
   // fetch the trip when the component loads or the id in the URL changes
   useEffect(() => {
@@ -29,6 +31,13 @@ export const TripDetails = () => {
     getTripById(id).then(setTrip)
   };
 
+  //handle deleting a trip
+  const handleDelete = () => {
+    deleteTrip(trip.id).then(() => {
+      navigate("/")
+    })
+  };
+  
   if (!trip) return <p>Loading...</p>;
 
   return (
@@ -43,7 +52,14 @@ export const TripDetails = () => {
               <button onClick={() => setIsEditModalOpen(true)}> Edit</button>
           </div>
         <div className="border rounded-md px-4">
-          <button>Delete</button>
+              <button onClick={() => setIsDeleteConfirmOpen(true)}>Delete</button>
+              <DeleteDialog
+                isOpen={isDeleteConfirmOpen}
+                onClose={() => setIsDeleteConfirmOpen(false)}
+                onConfirm={handleDelete}
+                title="Delete this trip?"
+                message="This will permanently delete the trip and all its stops. This action cannot be undone."
+              />
           </div>
           </div>
           </div>
