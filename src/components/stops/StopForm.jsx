@@ -1,4 +1,34 @@
-export const StopForm = () => { 
+import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import ReactModal from "react-modal";
+import { getCategories } from "../services/categoryServices";
+
+export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => { 
+
+  const isEditMode = Boolean(stopToEdit);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+
+  useEffect(() => {
+    getCategories().then(setCategories)
+   }, [])
+
+
+  const toggleCategory = (id) => {
+    if (selectedCategories.includes(id)) {
+      //it's already selected, so remove it
+      setSelectedCategories(selectedCategories.filter((catId) => catId !== id))
+    } else {
+      //it's not selected yet,so add it
+      setSelectedCategories([...selectedCategories, id])
+     }
+   }
+
+
+
+
+
 
   return (
      <ReactModal
@@ -7,22 +37,22 @@ export const StopForm = () => {
           onRequestClose={onClose}
           ariaHideApp={false}
         >
-          <h2 className="text-2xl font-bold mb-4">{isEditMode ? "Edit Trip" : "Create New Trip"}</h2>
-          {/* key resets uncontrolled inputs when switching between trips — without it defaultValue won't update */}
-          <form className="flex flex-col gap-4" key={tripToEdit?.id || 'new'} onSubmit={handleSubmit}>
+          <h2 className="text-2xl font-bold mb-4">{isEditMode ? "Edit Stop" : "Create New Stop"}</h2>
+          {/* key resets uncontrolled inputs when switching between stops — without it defaultValue won't update */}
+      <form className="flex flex-col gap-4" key={stopToEdit?.id || 'new'}>
             <fieldset className="flex flex-col gap-1 border-0 p-0">
               <div
                 className="text-sm font-medium text-gray-700"
                 htmlFor="inputTitle"
               >
-                Trip Name <span className="text-red-500">*</span>
+                Stop Name <span className="text-red-500">*</span>
               </div>
               <input
                 type="text"
                 id="inputTitle"
-                defaultValue={tripToEdit?.name || ""}
+                defaultValue={stopToEdit?.name || ""}
                 className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g. Italy 2026"
+                placeholder="e.g. Rome"
                 required
                 autoFocus
               />
@@ -36,90 +66,38 @@ export const StopForm = () => {
               </div>
               <textarea
                 id="inputDescription"
-                defaultValue={tripToEdit?.description || ""}
+                defaultValue={stopToEdit?.description || ""}
                 className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Trip Description"
+                placeholder="Stop Description"
               />
             </fieldset>
-            <fieldset className="flex flex-col gap-1 border-0 p-0">
-              <div
-                className="text-sm font-medium text-gray-700"
-                htmlFor="inputTripType"
-              >
-                Trip Type <span className="text-red-500">*</span>
-              </div>
-              <select
-                id="inputTripType"
-                defaultValue={tripToEdit?.trip_type?.id || ""}
-                className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              >
-                <option value="">Select a Trip Type</option>
-                {tripTypes.map((tripType) => (
-                  <option key={tripType.id} value={tripType.id}>
-                    {tripType.name}
-                  </option>
-                ))}
-              </select>
-            </fieldset>
-            <div className="flex flex-row items-center items-end gap-x-35">
-              <fieldset className="relative">
-                <div
-                  className="text-sm font-medium text-gray-700 pl-5"
-                  htmlFor="inputColorPicker"
-                >
-                  Color: <span className="text-red-500">*</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setColorPickerIsOpen(!colorPickerIsOpen)}
-                  className="ml-2 w-8 h-8 rounded border border-gray-300"
-                  style={{ backgroundColor: selectedColor?.hex ?? "#ffffff" }}
-                />
-                {colorPickerIsOpen && (
-                  <div className="absolute z-10">
-                    <SwatchesPicker
-                      color={selectedColor}
-                      onChange={(color) => {
-                        handleColorChange(color);
-                        setColorPickerIsOpen(false);
-                      }}
-                    />
-                  </div>
-                )}
-              </fieldset>
               <fieldset>
                 <div
                   className="text-sm font-medium text-gray-700"
-                  htmlFor="inputStartDate"
+                  htmlFor="inputVisitedDate"
                 >
-                  Start Date:
+                  Visited Date:
                   <span className="text-red-500">*</span>
                 </div>
                 <DatePicker
                   className="ml-2 border border-gray-300 rounded w-25"
-                  selected={selectedDate}
-                  onChange={handleDateChange}
                   dateFormat="MM/dd/yyyy"
                   required
                 />
               </fieldset>
-            </div>
             <fieldset className="mt-4">
               <div
                 className="text-sm font-medium text-gray-700 pl-5"
-                htmlFor="inputColorPicker"
+                htmlFor="inputCategories"
               >
-                Make this trip private?
+                Categories(select one or more)
               </div>
-              {/* checkbox is controlled so its checked state stays in sync with isPrivate */}
-              <input
-                className="ml-5"
-                type="checkbox"
-                id="inputPrivate"
-                checked={isPrivate}
-                onChange={(e) => setIsPrivate(e.target.checked)}
-              />
+          {categories.map((category) => (
+            <button type="button" onClick={() => (toggleCategory(category.id))} className={selectedCategories.includes(category.id) ? "border rounded-md p-1 ml-2 bg-blue-500 text-white" : "border rounded-md p-1 ml-2"}>
+              {category.name}
+           </button>
+          ))
+          }
             </fieldset>
             <div className="flex flex-row justify-end gap-x-6">
               <button
@@ -130,7 +108,6 @@ export const StopForm = () => {
               </button>
               <button
                 type="button"
-                onClick={handleCancel}
                 className="bg-red-500 text-white px-4 py-2 rounded"
               >
                 Cancel
