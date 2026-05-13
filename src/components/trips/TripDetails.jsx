@@ -3,12 +3,14 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { deleteTrip, getTripById } from "../services/tripServices";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import { TripForm } from "./TripForm";
+import { StopForm } from "../stops/StopForm";
 import { DeleteDialog } from "../ui/DeleteDialog";
 
 export const TripDetails = () => {
   const [trip, setTrip] = useState({});
   // controls whether the edit modal is visible set to false so it doesn't show on mount
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false)
   // useParams to get the :id
   const { id } = useParams();
   const navigate = useNavigate();
@@ -88,7 +90,7 @@ export const TripDetails = () => {
       </div>
       <div className="flex flex-row mt-10 mb-4">
       <div className="">Stops ({trip.stops?.length})</div>
-        <button className="border rounded-md px-4 ml-auto">+ Add Stop</button>
+        <button className="border rounded-md px-4 ml-auto" onClick={() => setModalIsOpen(true)}>+ Add Stop</button>
         </div>
       {/* relative path "stops/:id" resolves to /trips/:tripId/stops/:stopId */}
       {trip.stops?.map((stop) => (
@@ -129,6 +131,7 @@ export const TripDetails = () => {
         onTripSaved={refetchTrip}
         tripToEdit={trip}
       />
+       <StopForm isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)} />
     </div>
   );
 };
