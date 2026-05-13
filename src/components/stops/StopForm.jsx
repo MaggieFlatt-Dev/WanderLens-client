@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import ReactModal from "react-modal";
 import { getCategories } from "../services/categoryServices";
@@ -11,7 +11,7 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => {
   const [search, setSearch] = useState("");
   const [searchLocations, setSearchLocations] = useState([]);
   const [location, setLocation] = useState({});
-  const [justSelected, setJustSelected] = useState(false)
+  const justSelected = useRef(false)
 
   useEffect(() => {
     getCategories().then(setCategories);
@@ -30,9 +30,9 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => {
   // Get the locations when user has input search, otherwise do nothing
   //Added timer so max request of 1 per second doesn't break the search
   useEffect(() => {
-    if (!search || justSelected) {
+    if (!search || justSelected.current) {
       setSearchLocations([])
-      setJustSelected(false)
+      justSelected.current = false
       return
     } 
     const timer = setTimeout(() => {
@@ -40,7 +40,7 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => {
     }, 200)  
     
     return () => clearTimeout(timer)
-     }, [search, justSelected]);
+     }, [search]);
 
   return (
     <ReactModal
@@ -64,7 +64,7 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => {
             value={search}
             required
             onChange={(e) => {
-              setJustSelected(false)
+              justSelected.current = false
               setSearch(e.target.value)
             }}
           />
@@ -78,7 +78,7 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => {
                   setLocation(searchLocation);
                   setSearch(searchLocation.display_name);
                   setSearchLocations([]);
-                  setJustSelected(true);
+                  justSelected.current = true;
                 }}
               >
                 {searchLocation.display_name}
