@@ -65,15 +65,23 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
     };
     createStop(stopData).then(() => {
       onStopSaved()
-      onClose()
+      handleCancel()
      })
-   }
+  }
+  
+  const handleCancel = () => {
+    setLocation({})
+    setSearch("")
+    setSelectedDate(null);
+    setSelectedCategories([])
+    onClose()
+  }
   
   return (
     <ReactModal
       className="custom-small-modal"
       isOpen={isOpen}
-      onRequestClose={onClose}
+      onRequestClose={handleCancel}
       ariaHideApp={false}
     >
       <h2 className="text-2xl font-bold mb-4">
@@ -187,10 +195,11 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            {isEditMode ? "Save Changes" : "Create Trip"}
+            {isEditMode ? "Save Changes" : "Create Stop"}
           </button>
           <button
             type="button"
+            onClick={handleCancel}
             className="bg-red-500 text-white px-4 py-2 rounded"
           >
             Cancel
