@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import ReactModal from "react-modal";
 import { getCategories } from "../services/categoryServices";
 import { getLocations } from "../services/locationServices";
-import { createStop } from "../services/stopServices";
+import { createStop, updateStop } from "../services/stopServices";
 
 
 export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) => {
@@ -29,6 +29,21 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
       setSelectedCategories([...selectedCategories, id]);
     }
   };
+
+  // when stopToEdit changes (e.g. user opens edit modal), sync controlled state to match
+  useEffect(() => {
+    if (stopToEdit) {
+      setSelectedDate(stopToEdit.visited_date ? new Date(stopToEdit.visited_date) : null)
+      setSelectedCategories(stopToEdit.categories?.map(c => c.id) || [])
+      setSearch(`${stopToEdit.city}, ${stopToEdit.country}`)
+      setLocation({ address: { city: stopToEdit.city, country: stopToEdit.country }, lat: stopToEdit.latitude, lon: stopToEdit.longitude })
+    } else {
+      setSelectedDate(null)
+      setSelectedCategories([])
+      setSearch("")
+      setLocation({})
+    }
+  }, [stopToEdit])
 
   // Get the locations when user has input search, otherwise do nothing
   //Added timer so max request of 1 per second doesn't break the search
@@ -63,17 +78,29 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
       visited_date: selectedDate ? selectedDate.toISOString().split("T")[0] : null,
       category_ids: selectedCategories
     };
-    createStop(stopData).then(() => {
+    // same form handles both create and edit — which service call to make depends on isEditMode
+    const stopApiCall = isEditMode
+      ? updateStop(stopToEdit.id, stopData)
+      : createStop(stopData);
+    // after save: tell the parent to re-fetch so it shows fresh data, then close the modal
+    stopApiCall.then(() => {
       onStopSaved()
       handleCancel()
-     })
+      })  
   }
   
   const handleCancel = () => {
-    setLocation({})
-    setSearch("")
-    setSelectedDate(null);
-    setSelectedCategories([])
+    if (stopToEdit) {
+      setSelectedDate(stopToEdit.visited_date ? new Date(stopToEdit.visited_date + "T00:00:00") : null)
+      setSelectedCategories(stopToEdit.categories?.map(c => c.id) || [])
+      setSearch(`${stopToEdit.city}, ${stopToEdit.country}`)
+      setLocation({ address: { city: stopToEdit.city, country: stopToEdit.country }, lat: stopToEdit.latitude, lon: stopToEdit.longitude })
+    } else {
+      setLocation({})
+      setSearch("")
+      setSelectedDate(null)
+      setSelectedCategories([])
+    }
     onClose()
   }
   
