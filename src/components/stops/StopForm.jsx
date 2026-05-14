@@ -63,7 +63,6 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
       visited_date: selectedDate ? selectedDate.toISOString().split("T")[0] : null,
       category_ids: selectedCategories
     };
-    console.log(selectedCategories)
     createStop(stopData).then(() => {
       onStopSaved()
       onClose()
