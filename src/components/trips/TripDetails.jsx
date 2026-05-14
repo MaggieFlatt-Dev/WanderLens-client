@@ -131,7 +131,7 @@ export const TripDetails = () => {
         onTripSaved={refetchTrip}
         tripToEdit={trip}
       />
-       <StopForm isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)} />
+      <StopForm isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)} tripId={trip.id}/>
     </div>
   );
 };
