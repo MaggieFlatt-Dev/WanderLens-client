@@ -3,14 +3,17 @@ import DatePicker from "react-datepicker";
 import ReactModal from "react-modal";
 import { getCategories } from "../services/categoryServices";
 import { getLocations } from "../services/locationServices";
+import { createStop } from "../services/stopServices";
 
-export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => {
+
+export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) => {
   const isEditMode = Boolean(stopToEdit);
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [search, setSearch] = useState("");
   const [searchLocations, setSearchLocations] = useState([]);
   const [location, setLocation] = useState({});
+  const [selectedDate, setSelectedDate] = useState(null)
   const justSelected = useRef(false)
 
   useEffect(() => {
@@ -35,13 +38,37 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => {
       justSelected.current = false
       return
     } 
-    const timer = setTimeout(() => {
+  const timer = setTimeout(() => {
       getLocations(search).then(setSearchLocations)
     }, 200)  
     
     return () => clearTimeout(timer)
      }, [search]);
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+   };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const stopData = {
+      trip_id: tripId,
+      name: e.target.inputTitle.value,
+      description: e.target.inputDescription.value,
+      // need to take into account locations can have city, town, or village
+      city: location.address?.city || location.address?.town || location.address?.village,
+      country: location.address?.country,
+      latitude: location.lat,
+      longitude: location.lon,
+      visited_date: selectedDate ? selectedDate.toISOString().split("T")[0] : null,
+      categories: selectedCategories
+    };
+    createStop(stopData).then(() => {
+      onStopSaved()
+      onClose()
+     })
+   }
+  
   return (
     <ReactModal
       className="custom-small-modal"
@@ -55,8 +82,25 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => {
       {/* key resets uncontrolled inputs when switching between stops — without it defaultValue won't update */}
       <form className="flex flex-col gap-4" key={stopToEdit?.id || "new"}>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
+          <div
+            className="text-sm font-medium text-gray-700"
+            htmlFor="inputTitle"
+          >
+            Stop Name <span className="text-red-500">*</span>
+          </div>
+          <input
+            type="text"
+            id="inputTitle"
+            defaultValue={stopToEdit?.name || ""}
+            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="e.g. New York"
+            required
+            autoFocus
+          />
+        </fieldset>
+        <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div className="text-sm font-medium text-gray-700">
-            Search Location
+            Location Search
             <span className="text-red-500">*</span>
           </div>
           <input
@@ -89,23 +133,6 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => {
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
             className="text-sm font-medium text-gray-700"
-            htmlFor="inputTitle"
-          >
-            Stop Name <span className="text-red-500">*</span>
-          </div>
-          <input
-            type="text"
-            id="inputTitle"
-            defaultValue={stopToEdit?.name || ""}
-            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="e.g. Rome"
-            required
-            autoFocus
-          />
-        </fieldset>
-        <fieldset className="flex flex-col gap-1 border-0 p-0">
-          <div
-            className="text-sm font-medium text-gray-700"
             htmlFor="inputDescription"
           >
             Description
@@ -127,6 +154,8 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => {
           </div>
           <DatePicker
             className="ml-2 border border-gray-300 rounded w-25"
+            selected={selectedDate}
+            onChange={handleDateChange}
             dateFormat="MM/dd/yyyy"
             required
           />
@@ -156,7 +185,7 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit }) => {
         <div className="flex flex-row justify-end gap-x-6">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onSubmit={handleSubmit}
           >
             {isEditMode ? "Save Changes" : "Create Trip"}
           </button>
