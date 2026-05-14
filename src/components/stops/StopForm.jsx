@@ -61,8 +61,9 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
       latitude: location.lat,
       longitude: location.lon,
       visited_date: selectedDate ? selectedDate.toISOString().split("T")[0] : null,
-      categories: selectedCategories
+      category_ids: selectedCategories
     };
+    console.log(selectedCategories)
     createStop(stopData).then(() => {
       onStopSaved()
       onClose()
@@ -80,7 +81,7 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
         {isEditMode ? "Edit Stop" : "Create New Stop"}
       </h2>
       {/* key resets uncontrolled inputs when switching between stops — without it defaultValue won't update */}
-      <form className="flex flex-col gap-4" key={stopToEdit?.id || "new"}>
+      <form className="flex flex-col gap-4" key={stopToEdit?.id || "new"} onSubmit={handleSubmit}>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
             className="text-sm font-medium text-gray-700"
@@ -185,7 +186,7 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
         <div className="flex flex-row justify-end gap-x-6">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onSubmit={handleSubmit}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
             {isEditMode ? "Save Changes" : "Create Trip"}
           </button>
