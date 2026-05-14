@@ -3,17 +3,33 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { deleteStop, getStopById } from "../services/stopServices";
 import { ChevronLeftIcon } from "@heroicons/react/16/solid";
 import { DeleteDialog } from "../ui/DeleteDialog";
+import { StopForm } from "./StopForm";
 
 export const StopDetails = () => {
   const { id, stopId } = useParams();
   const [stop, setStop] = useState({});
+  // controls whether the edit modal is visible set to false so it doesn't show on mount
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const navigate = useNavigate();
-console.log(stop)
+
+  // fetch the stop when the component loads or the id in the URL changes
   useEffect(() => {
+    getStopById(stopId).then((data) => {
+      // if the backend says the stop doesn't exist (or belongs to another user), send them back to trip detail page
+      if (data.reason === "Not found") {
+        navigate(`/trips/${id}`);
+      } else {
+        setStop(data);
+      }
+    });
+  }, [stopId, navigate, id]);
+
+  // called by StopForm after a successful save to refresh the trip data on this page
+  const refetchStop = () => {
     getStopById(stopId).then(setStop);
-  }, [stopId]);
+  };
 
   const handleDelete = () => {
     deleteStop(stop.id).then(() => {
@@ -58,25 +74,21 @@ console.log(stop)
             {stop.city},{""} {stop.country}
           </div>
         </div>
-          <div className="flex gap-40 mt-8">
-            <p className="text-sm">
-            Visited
-            </p>
-            <p className="text-sm">
-              Part of Trip
-            </p>
+        <div className="flex gap-40 mt-8">
+          <p className="text-sm">Visited</p>
+          <p className="text-sm">Part of Trip</p>
         </div>
-         <div className="flex gap-32">
-            <div className="text-sm">
+        <div className="flex gap-32">
+          <div className="text-sm">
             {new Date(stop.visited_date).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-            </div>
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </div>
           <Link to={`/trips/${id}`} className="text-sm">
             {stop.trip_name}
-            </Link>
+          </Link>
         </div>
         <div className="flex text-sm p-3 mt-5">
           Categories:
@@ -85,23 +97,21 @@ console.log(stop)
               {category.name}
             </p>
           ))}
-          
         </div>
         <div>
           Description:
-          <div>
-            {stop.description}
-          </div>
+          <div>{stop.description}</div>
         </div>
       </div>
-       <div className="flex justify-center border border-dashed rounded-md p-2 mt-20">
+      <div className="flex justify-center border border-dashed rounded-md p-2 mt-20">
         {" "}
         Place Holder for Photos{" "}
       </div>
-       <div className="flex justify-center border border-dashed rounded-md p-2 mt-4">
+      <div className="flex justify-center border border-dashed rounded-md p-2 mt-4">
         {" "}
         Place Holder for Map{" "}
       </div>
+      <StopForm isOpen={isEditModalOpen} onClose={() => setModalIsOpen(false)} stopToEdit={stop} onStopSaved={refetchStop}/>
     </div>
   );
 };
