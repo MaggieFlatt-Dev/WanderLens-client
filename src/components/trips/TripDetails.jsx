@@ -5,7 +5,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import { TripForm } from "./TripForm";
 import { StopForm } from "../stops/StopForm";
 import { DeleteDialog } from "../ui/DeleteDialog";
-import { getStopById } from "../services/stopServices";
 
 export const TripDetails = () => {
   const [trip, setTrip] = useState({});
