@@ -15,6 +15,7 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
   const [selectedDate, setSelectedDate] = useState(tripToEdit?.start_date ? new Date(tripToEdit.start_date) : null);
   const [selectedColor, setSelectedColor] = useState(tripToEdit?.color ? {hex: tripToEdit.color} : undefined);
   const [isPrivate, setIsPrivate] = useState(tripToEdit?.is_private || false);
+  
   const [colorPickerIsOpen, setColorPickerIsOpen] = useState(false);
 
   useEffect(() => {
