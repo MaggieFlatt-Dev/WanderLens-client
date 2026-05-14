@@ -10,7 +10,6 @@ export const StopDetails = () => {
   const [stop, setStop] = useState({});
   // controls whether the edit modal is visible set to false so it doesn't show on mount
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -111,7 +110,7 @@ export const StopDetails = () => {
         {" "}
         Place Holder for Map{" "}
       </div>
-      <StopForm isOpen={isEditModalOpen} onClose={() => setModalIsOpen(false)} stopToEdit={stop} onStopSaved={refetchStop}/>
+      <StopForm isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} stopToEdit={stop} onStopSaved={refetchStop}/>
     </div>
   );
 };
