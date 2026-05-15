@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 .custom-small-modal {
   position: absolute;
@@ -11,4 +12,8 @@
   border-radius: 8px;
   padding: 24px;
   outline: none;
+}
+
+.leaflet-container {
+@apply w-full h-screen
 }
