@@ -1,20 +1,24 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import ReactModal from "react-modal";
 import { getCategories } from "../services/categoryServices";
 import { getLocations } from "../services/locationServices";
 import { createStop, updateStop } from "../services/stopServices";
 
-
-export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) => {
+export const StopForm = ({
+  isOpen,
+  onClose,
+  onStopSaved,
+  stopToEdit,
+  tripId,
+}) => {
   const isEditMode = Boolean(stopToEdit);
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [search, setSearch] = useState("");
   const [searchLocations, setSearchLocations] = useState([]);
   const [location, setLocation] = useState({});
-  const [selectedDate, setSelectedDate] = useState(null)
-  const justSelected = useRef(false)
+  const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
     getCategories().then(setCategories);
@@ -33,50 +37,53 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
   // when stopToEdit changes (e.g. user opens edit modal), sync controlled state to match
   useEffect(() => {
     if (stopToEdit) {
-      setSelectedDate(stopToEdit.visited_date ? new Date(stopToEdit.visited_date) : null)
-      setSelectedCategories(stopToEdit.categories?.map(c => c.id) || [])
-      setSearch(`${stopToEdit.city}, ${stopToEdit.country}`)
-      setLocation({ address: { city: stopToEdit.city, country: stopToEdit.country }, lat: stopToEdit.latitude, lon: stopToEdit.longitude })
+      setSelectedDate(
+        stopToEdit.visited_date ? new Date(stopToEdit.visited_date) : null,
+      );
+      setSelectedCategories(stopToEdit.categories?.map((c) => c.id) || []);
+      setSearch(`${stopToEdit.city}, ${stopToEdit.country}`);
+      setLocation({
+        address: { city: stopToEdit.city, country: stopToEdit.country },
+        lat: stopToEdit.latitude,
+        lon: stopToEdit.longitude,
+      });
     } else {
-      setSelectedDate(null)
-      setSelectedCategories([])
-      setSearch("")
-      setLocation({})
+      setSelectedDate(null);
+      setSelectedCategories([]);
+      setSearch("");
+      setLocation({});
     }
-  }, [stopToEdit])
+  }, [stopToEdit]);
 
-  // Get the locations when user has input search, otherwise do nothing
-  //Added timer so max request of 1 per second doesn't break the search
-  useEffect(() => {
-    if (!search || justSelected.current) {
-      setSearchLocations([])
-      justSelected.current = false
-      return
-    } 
-  const timer = setTimeout(() => {
-      getLocations(search).then(setSearchLocations)
-    }, 200)  
-    
-    return () => clearTimeout(timer)
-     }, [search]);
+  const handleSearch = () => {
+    if (search) {
+      getLocations(search).then(setSearchLocations);
+    }
+  };
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-   };
-  
+  };
+
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const stopData = {
       trip_id: tripId,
       name: e.target.inputTitle.value,
       description: e.target.inputDescription.value,
       // need to take into account locations can have city, town, or village
-      city: location.address?.city || location.address?.town || location.address?.village || null,
+      city:
+        location.address?.city ||
+        location.address?.town ||
+        location.address?.village ||
+        null,
       country: location.address?.country,
       latitude: location.lat,
       longitude: location.lon,
-      visited_date: selectedDate ? selectedDate.toISOString().split("T")[0] : null,
-      category_ids: selectedCategories
+      visited_date: selectedDate
+        ? selectedDate.toISOString().split("T")[0]
+        : null,
+      category_ids: selectedCategories,
     };
     // same form handles both create and edit — which service call to make depends on isEditMode
     const stopApiCall = isEditMode
@@ -84,26 +91,34 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
       : createStop(stopData);
     // after save: tell the parent to re-fetch so it shows fresh data, then close the modal
     stopApiCall.then(() => {
-      onStopSaved()
-      handleCancel()
-      })  
-  }
-  
+      onStopSaved();
+      handleCancel();
+    });
+  };
+
   const handleCancel = () => {
     if (stopToEdit) {
-      setSelectedDate(stopToEdit.visited_date ? new Date(stopToEdit.visited_date + "T00:00:00") : null)
-      setSelectedCategories(stopToEdit.categories?.map(c => c.id) || [])
-      setSearch(`${stopToEdit.city}, ${stopToEdit.country}`)
-      setLocation({ address: { city: stopToEdit.city, country: stopToEdit.country }, lat: stopToEdit.latitude, lon: stopToEdit.longitude })
+      setSelectedDate(
+        stopToEdit.visited_date
+          ? new Date(stopToEdit.visited_date + "T00:00:00")
+          : null,
+      );
+      setSelectedCategories(stopToEdit.categories?.map((c) => c.id) || []);
+      setSearch(`${stopToEdit.city}, ${stopToEdit.country}`);
+      setLocation({
+        address: { city: stopToEdit.city, country: stopToEdit.country },
+        lat: stopToEdit.latitude,
+        lon: stopToEdit.longitude,
+      });
     } else {
-      setLocation({})
-      setSearch("")
-      setSelectedDate(null)
-      setSelectedCategories([])
+      setLocation({});
+      setSearch("");
+      setSelectedDate(null);
+      setSelectedCategories([]);
     }
-    onClose()
-  }
-  
+    onClose();
+  };
+
   return (
     <ReactModal
       className="custom-small-modal"
@@ -115,7 +130,11 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
         {isEditMode ? "Edit Stop" : "Create New Stop"}
       </h2>
       {/* key resets uncontrolled inputs when switching between stops — without it defaultValue won't update */}
-      <form className="flex flex-col gap-4" key={stopToEdit?.id || "new"} onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-4"
+        key={stopToEdit?.id || "new"}
+        onSubmit={handleSubmit}
+      >
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
             className="text-sm font-medium text-gray-700"
@@ -138,15 +157,28 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
             Location Search
             <span className="text-red-500">*</span>
           </div>
-          <input
-            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={search}
-            required
-            onChange={(e) => {
-              justSelected.current = false
-              setSearch(e.target.value)
-            }}
-          />
+          <div className="flex gap-2">
+            <input
+              className="border border-gray-300 rounded px-3 py-2 w-108 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={search}
+              required
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSearch();
+                }
+              }}
+              placeholder="e.g. Rome, Italy"
+            />
+            <button
+              type="button"
+              onClick={handleSearch}
+              className="border border-gray-300 rounded px-3 py-2 text-sm"
+            >
+              Search
+            </button>
+          </div>
           <div className="">
             {searchLocations.map((searchLocation) => (
               <button
@@ -157,7 +189,6 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
                   setLocation(searchLocation);
                   setSearch(searchLocation.display_name);
                   setSearchLocations([]);
-                  justSelected.current = true;
                 }}
               >
                 {searchLocation.display_name}
