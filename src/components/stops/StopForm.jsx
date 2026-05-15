@@ -71,7 +71,7 @@ export const StopForm = ({ isOpen, onClose, onStopSaved, stopToEdit, tripId }) =
       name: e.target.inputTitle.value,
       description: e.target.inputDescription.value,
       // need to take into account locations can have city, town, or village
-      city: location.address?.city || location.address?.town || location.address?.village,
+      city: location.address?.city || location.address?.town || location.address?.village || null,
       country: location.address?.country,
       latitude: location.lat,
       longitude: location.lon,
