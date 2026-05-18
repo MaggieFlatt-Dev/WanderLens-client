@@ -37,4 +37,12 @@ export const deleteStop = (id) => {
         },
         body: JSON.stringify(id)
     })
+}
+ 
+export const getAllStops = () => {
+    return fetch(`http://localhost:8000/api/stops`, {
+        headers: {
+            Authorization: "Token " + JSON.parse(localStorage.getItem("WanderLens_token")).token,
+        }, 
+    }).then(res => res.json())
  }
