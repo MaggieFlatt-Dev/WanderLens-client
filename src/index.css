@@ -15,5 +15,5 @@
 }
 
 .leaflet-container {
-@apply w-full h-screen
+@apply w-200 h-150 border rounded-md mt-10
 }
