@@ -3,7 +3,7 @@ import { TripForm } from "./TripForm";
 import { getTrips } from "../services/tripServices";
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
 import { Link } from "react-router-dom";
-import { leafletMap } from "../ui/leaflet";
+import { LeafletMap } from "../ui/leaflet";
 
 export const TripList = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -33,8 +33,8 @@ export const TripList = () => {
           onTripSaved={fetchTrips}
         />
       </div>
-      <div className="leaflet-container">
-        {leafletMap()}
+      <div className="w-full flex justify-center">
+        {LeafletMap()}
       </div>
       <div className="mt-10">
         {trips.length ? (
