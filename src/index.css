@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
+.ReactModal__Overlay {
+  z-index: 1000;
+}
+
 .custom-small-modal {
   position: absolute;
   top: 50%;
