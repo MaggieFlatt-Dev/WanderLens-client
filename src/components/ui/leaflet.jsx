@@ -32,7 +32,11 @@ export const LeafletMap = () => {
       />
       {stops.map((stop) => (
         <Marker key={stop.id} position={[stop.latitude, stop.longitude]} icon={createPinIcon(stop.trip_color)}>
-          <Popup>{stop.name}</Popup>
+          <Popup>
+            <div className="font font-bold">
+              {stop.trip_name}
+            </div>
+            {stop.name}</Popup>
         </Marker>
       ))}
     </MapContainer>
