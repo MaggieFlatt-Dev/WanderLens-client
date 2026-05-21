@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
 
+//Have to override the leaflet set color for pins with custom divIcon
 const createPinIcon = (color) =>
   L.divIcon({
     className: "",
@@ -35,6 +36,7 @@ export const LeafletMap = () => {
         <Marker
           key={stop.id}
           position={[stop.latitude, stop.longitude]}
+          //call createPinIcon function and pass it the trip_color
           icon={createPinIcon(stop.trip_color)}
         >
           <Popup>
