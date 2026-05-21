@@ -1,6 +1,5 @@
 import { useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
-import "./Login.css"
 
 export const Register = () => {
     const [email, setEmail] = useState("admina@straytor.com")
@@ -36,63 +35,70 @@ export const Register = () => {
     }
 
     return (
-        <main className="container--login">
-            <dialog className="dialog dialog--auth" ref={existDialog}>
+        <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+            <dialog className="p-6 rounded-lg shadow-md" ref={existDialog}>
                 <div>User does not exist</div>
-                <button className="button--close" onClick={() => existDialog.current.close()}>Close</button>
+                <button className="mt-3 text-sm text-gray-500 hover:text-gray-700" onClick={() => existDialog.current.close()}>Close</button>
             </dialog>
 
             <section>
-                <form className="form--login" onSubmit={handleRegister}>
-                    <h1 className="text-4xl mt-7 mb-3">WanderLens</h1>
-                    <h2 className="text-xl mb-10">Register new account</h2>
-                    <fieldset className="mb-4">
-                        <label htmlFor="firstName"> First name </label>
-                        <input type="text" id="firstName"
+                <form className="bg-white p-8 rounded-lg shadow-md w-80 flex flex-col gap-4" onSubmit={handleRegister}>
+                    <h1 className="text-4xl font-bold text-center">WanderLens</h1>
+                    <h2 className="text-xl text-center text-gray-600">Register new account</h2>
+                    <fieldset className="flex flex-col gap-1 border-0 p-0">
+                        <label className="text-sm font-medium text-gray-700" htmlFor="firstName">First name</label>
+                        <input
+                            type="text"
+                            id="firstName"
                             value={firstName}
                             onChange={evt => setFirstName(evt.target.value)}
-                            className="form-control"
-                            placeholder=""
-                            required autoFocus />
+                            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required autoFocus
+                        />
                     </fieldset>
-                    <fieldset className="mb-4">
-                        <label htmlFor="lastName"> Last name </label>
-                        <input type="text" id="lastName"
+                    <fieldset className="flex flex-col gap-1 border-0 p-0">
+                        <label className="text-sm font-medium text-gray-700" htmlFor="lastName">Last name</label>
+                        <input
+                            type="text"
+                            id="lastName"
                             value={lastName}
                             onChange={evt => setLastName(evt.target.value)}
-                            className="form-control"
-                            placeholder=""
-                            required autoFocus />
+                            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        />
                     </fieldset>
-                    <fieldset className="mb-4">
-                        <label htmlFor="inputEmail"> Email address </label>
-                        <input type="email" id="inputEmail"
+                    <fieldset className="flex flex-col gap-1 border-0 p-0">
+                        <label className="text-sm font-medium text-gray-700" htmlFor="inputEmail">Email address</label>
+                        <input
+                            type="email"
+                            id="inputEmail"
                             value={email}
                             onChange={evt => setEmail(evt.target.value)}
-                            className="form-control"
+                            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Email address"
-                            required autoFocus />
+                            required
+                        />
                     </fieldset>
-                    <fieldset className="mb-4">
-                        <label htmlFor="inputPassword"> Password </label>
-                        <input type="password" id="inputPassword"
+                    <fieldset className="flex flex-col gap-1 border-0 p-0">
+                        <label className="text-sm font-medium text-gray-700" htmlFor="inputPassword">Password</label>
+                        <input
+                            type="password"
+                            id="inputPassword"
                             value={password}
                             onChange={evt => setPassword(evt.target.value)}
-                            className="form-control"
+                            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Password"
                         />
                     </fieldset>
-                    <fieldset>
-                        <button type="submit" className="button p-3 rounded-md bg-blue-800 text-blue-100">
+                    <fieldset className="border-0 p-0">
+                        <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                             Register
                         </button>
                     </fieldset>
                 </form>
             </section>
-            <div className="loginLinks">
-                <section className="link--register">
-                    <Link className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" to="/login">Already have an account?</Link>
-                </section>
+            <div className="mt-4">
+                <Link className="text-blue-600 hover:text-blue-800 underline text-sm" to="/login">Already have an account?</Link>
             </div>
         </main>
     )

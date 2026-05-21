@@ -1,16 +1,62 @@
-# React + Vite
+# WanderLens — Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A travel companion app for organizing trips, logging stops, and visualizing your travels on an interactive map.
 
-Currently, two official plugins are available:
+This is the **frontend** repo. The backend lives at [https://github.com/MaggieFlatt-Dev/WanderLens-api].
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React** + **Vite**
+- **Tailwind CSS**
+- **React Leaflet** + **Leaflet.js** for the interactive map
+- **Nominatim** (OpenStreetMap) for geocoding stop locations
+- Talks to a **Django REST Framework** backend
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Features
+
+- User registration and login
+- Create, edit, and delete trips — each with a name, type, start date, color, and privacy setting
+- Add stops to trips with location search powered by Nominatim geocoding
+- Tag stops with categories and track visited dates
+- Interactive map on the trip list that shows all of your stops as color-coded pins, grouped by trip color
+- Popups on each map pin showing the stop name and which trip it belongs to
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v18+)
+- The backend API running locally — see the backend repo for setup
+
+### Installation
+
+```bash
+git clone <repo-url>
+cd WanderLensclient
+npm install
+npm run dev
+```
+
+The app runs at `http://localhost:5173`.
+
+---
+
+## Related
+
+- **Backend repo:** [https://github.com/MaggieFlatt-Dev/WanderLens-api]
+- **Wireframes (Miro):** [https://miro.com/app/board/uXjVHcJSEE0=/]
+- **ERD (dbdiagram.io):** [https://dbdiagram.io/d/WanderLens-69ee545ac6a36f9c1b86527d]
+
+---
+
+## What's Next
+
+- Photo uploads per stop (Cloudinary)
+- Public trip sharing via URL
+- User-created custom categories
+- Individual stop map view on the stop detail page
