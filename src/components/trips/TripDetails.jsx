@@ -104,7 +104,7 @@ export const TripDetails = () => {
               <div>
                 <p className="ml-2 font-semibold">{stop.name}</p>
                 <p className="text-sm pl-4">
-                  {stop.city}, {stop.country} -{" "}
+                  {stop.city ? `${stop.city}, ` : ""}{stop.country} - {""}
                   {new Date(stop.visited_date).toLocaleDateString("en-US", {
                     month: "long",
                     day: "numeric",

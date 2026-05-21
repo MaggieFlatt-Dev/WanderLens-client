@@ -70,7 +70,7 @@ export const StopDetails = () => {
             style={{ backgroundColor: stop.trip_color }}
           />
           <div className="flex flex-col text-sm">
-            {stop.city},{""} {stop.country}
+            {stop.city ? `${stop.city}, ` : ""}{stop.country}
           </div>
         </div>
         <div className="flex gap-40 mt-8">

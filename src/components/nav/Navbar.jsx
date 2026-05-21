@@ -6,8 +6,17 @@ export const NavBar = () => {
         <ul className="flex items-center gap-4 px-6 py-4 bg-white shadow list-none">
             {
                 (localStorage.getItem("WanderLens_token") !== null) ?
-                <>
-                    <li>
+                    <>
+                        <li>
+                            <button
+                                className="text-gray-700 hover:text-blue-600"
+                                onClick={() => {
+                                    navigate('/')
+                                 } } 
+                            >Home
+                            </button>
+                        </li>
+                    <li className="ml-auto">
                         <button
                             className="text-gray-700 hover:text-blue-600"
                             onClick={() => {
