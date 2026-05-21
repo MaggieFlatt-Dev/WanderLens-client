@@ -5,6 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import { TripForm } from "./TripForm";
 import { StopForm } from "../stops/StopForm";
 import { DeleteDialog } from "../ui/DeleteDialog";
+import { LeafletMap } from "../ui/leaflet";
 
 export const TripDetails = () => {
   const [trip, setTrip] = useState({});
@@ -84,9 +85,8 @@ export const TripDetails = () => {
             </div>
         </div>
       </div>
-      <div className="flex justify-center border border-dashed rounded-md p-2 mt-20">
-        {" "}
-        Place Holder for Map{" "}
+      <div className="flex justify-center">
+        {LeafletMap()}
       </div>
       <div className="flex flex-row mt-10 mb-4">
       <div className="">Stops ({trip.stops?.length})</div>
