@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { getAllStops } from "../services/stopServices";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -19,6 +19,18 @@ const createPinIcon = (color) =>
     popupAnchor: [0, -36],
   });
 
+//When stops load, FitBounds calls map.fitbounds() zooming and centering the map to fit all the users pins
+const FitBounds = ({ stops }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (stops.length > 0) {
+      const bounds = stops.map((stop) => [stop.latitude, stop.longitude]);
+      map.fitBounds(bounds, { padding: [50, 50] });
+    }
+  }, [stops, map]);
+  return null;
+};
+
 export const LeafletMap = () => {
   const [stops, setStops] = useState([]);
 
@@ -28,6 +40,7 @@ export const LeafletMap = () => {
 
   return (
     <MapContainer center={[36.327, -39.764]} zoom={3} scrollWheelZoom={true}>
+      <FitBounds stops={stops} />
       <TileLayer
         attribution='&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url={`https://api.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=${import.meta.env.VITE_THUNDERFOREST_API_KEY}`}
