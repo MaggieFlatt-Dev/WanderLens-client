@@ -2,6 +2,8 @@ import L from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { getAllStops } from "../services/stopServices";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ChevronRightIcon } from "@heroicons/react/16/solid";
 
 const createPinIcon = (color) =>
   L.divIcon({
@@ -17,7 +19,6 @@ const createPinIcon = (color) =>
   });
 
 export const LeafletMap = () => {
-  
   const [stops, setStops] = useState([]);
 
   useEffect(() => {
@@ -31,12 +32,38 @@ export const LeafletMap = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {stops.map((stop) => (
-        <Marker key={stop.id} position={[stop.latitude, stop.longitude]} icon={createPinIcon(stop.trip_color)}>
+        <Marker
+          key={stop.id}
+          position={[stop.latitude, stop.longitude]}
+          icon={createPinIcon(stop.trip_color)}
+        >
           <Popup>
-            <div className="font font-bold">
-              {stop.trip_name}
+            <p className="flex justify-center font-bold">
+              {stop.name}
+              </p>
+            <p>
+              {stop.city}, {stop.country} -{" "}
+              {new Date(stop.visited_date).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </p>
+            <p className="">Part of: {stop.trip_name}</p>
+            <div className="flex">
+              {stop.categories?.map((category) => (
+                <div
+                  key={category.id}
+                  className="border rounded-md px-0.5 mx-0.5"
+                >
+                  {category.name}
+                </div>
+              ))}
             </div>
-            {stop.name}</Popup>
+            <Link to={`/trips/${stop.trip_id}`} className="flex pt-4">
+              View trip details<ChevronRightIcon className="w-4 h-4"/>
+            </Link>
+          </Popup>
         </Marker>
       ))}
     </MapContainer>
