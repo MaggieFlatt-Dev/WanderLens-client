@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export const Login = () => {
     const [email, setEmail] = useState("maggie@testemail.com")
-    const [password, setPassword] = useState("hilliard")
+    const [password, setPassword] = useState("Test1")
     const existDialog = useRef()
     const navigate = useNavigate()
 
