@@ -29,8 +29,9 @@ export const LeafletMap = () => {
   return (
     <MapContainer center={[36.327, -39.764]} zoom={3} scrollWheelZoom={true}>
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url={`https://api.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=${import.meta.env.VITE_THUNDERFOREST_API_KEY}`}
+        maxZoom={22}
       />
       {stops.map((stop) => (
         <Marker
@@ -40,9 +41,7 @@ export const LeafletMap = () => {
           icon={createPinIcon(stop.trip_color)}
         >
           <Popup>
-            <p className="flex justify-center font-bold">
-              {stop.name}
-              </p>
+            <p className="flex justify-center font-bold">{stop.name}</p>
             <p>
               {stop.city}, {stop.country} -{" "}
               {new Date(stop.visited_date).toLocaleDateString("en-US", {
@@ -63,7 +62,8 @@ export const LeafletMap = () => {
               ))}
             </div>
             <Link to={`/trips/${stop.trip_id}`} className="flex pt-4">
-              View trip details<ChevronRightIcon className="w-4 h-4"/>
+              View trip details
+              <ChevronRightIcon className="w-4 h-4" />
             </Link>
           </Popup>
         </Marker>
