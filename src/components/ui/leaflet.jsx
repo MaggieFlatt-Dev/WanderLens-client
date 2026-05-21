@@ -26,7 +26,7 @@ export const LeafletMap = () => {
   }, []);
 
   return (
-    <MapContainer center={[36.327, -39.764]} zoom={3} scrollWheelZoom={false}>
+    <MapContainer center={[36.327, -39.764]} zoom={3} scrollWheelZoom={true}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
