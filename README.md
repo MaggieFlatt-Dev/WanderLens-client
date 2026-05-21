@@ -1,17 +1,29 @@
 # WanderLens — Client
 
-> A travel companion app that lets users organize their trips and pinned stops in one place. Friends and family can follow along with a user's travels through an interactive map.
+> A travel companion app for organizing trips, logging stops, and visualizing your travels on an interactive map.
 
-This is the **frontend** repo. The backend lives in [https://github.com/MaggieFlatt-Dev/WanderLens-api].
+This is the **frontend** repo. The backend lives at [https://github.com/MaggieFlatt-Dev/WanderLens-api].
 
 ---
 
 ## Tech Stack
 
-- **React** with **Tailwind CSS**
-- **Leaflet** for the map view (stretch goal)
-- **Nominatim** (OpenStreetMap) for geocoding
-- Talks to a **Django REST Framework** API (see backend repo)
+- **React** + **Vite**
+- **Tailwind CSS**
+- **React Leaflet** + **Leaflet.js** for the interactive map
+- **Nominatim** (OpenStreetMap) for geocoding stop locations
+- Talks to a **Django REST Framework** backend
+
+---
+
+## Features
+
+- User registration and login
+- Create, edit, and delete trips — each with a name, type, start date, color, and privacy setting
+- Add stops to trips with location search powered by Nominatim geocoding
+- Tag stops with categories and track visited dates
+- Interactive map on the trip list that shows all of your stops as color-coded pins, grouped by trip color
+- Popups on each map pin showing the stop name and which trip it belongs to
 
 ---
 
@@ -19,47 +31,18 @@ This is the **frontend** repo. The backend lives in [https://github.com/MaggieFl
 
 ### Prerequisites
 - Node.js (v18+)
-- The backend API running locally — see backend repo for setup
+- The backend API running locally — see the backend repo for setup
 
 ### Installation
 
 ```bash
-# Clone the repo
 git clone <repo-url>
-cd <repo-folder>
-
-# Install dependencies
+cd WanderLensclient
 npm install
-
-# Start the dev server
 npm run dev
 ```
 
-The app should be running at `http://localhost:5173` (Vite).
-
----
-
-## Project Status
-
-🚧 **In active development** — currently building MVP.
-
-See GitHub issues or GitHub project board for the full task list.
-
----
-
-## Features
-
-### MVP
-- [x] User registration & login
-- [ ] Create, view, edit, delete trips
-- [ ] Add stops to a trip with location search (geocoding)
-- [ ] Tag stops with predefined categories
-
-### Stretch
-- [ ] Interactive map view with color-coded pins
-- [ ] User-created custom categories
-- [ ] Photo uploads (Cloudinary)
-- [ ] Public trip sharing via URL
+The app runs at `http://localhost:5173`.
 
 ---
 
@@ -71,4 +54,9 @@ See GitHub issues or GitHub project board for the full task list.
 
 ---
 
-*Capstone project — full README and documentation coming once the project is complete.*
+## What's Next
+
+- Photo uploads per stop (Cloudinary)
+- Public trip sharing via URL
+- User-created custom categories
+- Individual stop map view on the stop detail page
