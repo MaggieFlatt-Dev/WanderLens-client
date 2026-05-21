@@ -25,7 +25,7 @@ const FitBounds = ({ stops }) => {
   useEffect(() => {
     if (stops.length > 0) {
       const bounds = stops.map((stop) => [stop.latitude, stop.longitude]);
-      map.fitBounds(bounds, { padding: [50, 50] });
+      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 5 });
     }
   }, [stops, map]);
   return null;
