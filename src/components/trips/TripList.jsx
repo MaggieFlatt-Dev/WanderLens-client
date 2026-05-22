@@ -34,7 +34,7 @@ export const TripList = () => {
         />
       </div>
       <div className="w-full flex justify-center">
-        {LeafletMap()}
+        <LeafletMap/>
       </div>
       <div className="mt-10">
         {trips.length ? (
