@@ -19,7 +19,7 @@ const createPinIcon = (color) =>
     popupAnchor: [0, -36],
   });
 
-//When stops load, FitBounds calls map.fitbounds() zooming and centering the map to fit all the users pins
+//When stops load, FitBounds calls map.fitBounds() zooming and centering the map to fit all the users pins
 const FitBounds = ({ stops }) => {
   const map = useMap();
   useEffect(() => {
@@ -31,13 +31,22 @@ const FitBounds = ({ stops }) => {
   return null;
 };
 
-export const LeafletMap = () => {
-  const [stops, setStops] = useState([]);
+export const LeafletMap = ({ stops: propStops }) => {
+  // only used when no stops prop is passed (TripList — show all stops)
+  const [fetchedStops, setFetchedStops] = useState([]);
 
   useEffect(() => {
-    getAllStops().then(setStops);
-  }, []);
+    // if stops weren't passed in, fetch all stops (TripList case)
+    // if stops were passed in (TripDetails), skip the fetch — use those directly
+    if (propStops === undefined) {
+      getAllStops().then(setFetchedStops);
+    }
+  }, [propStops]);
 
+  // propStops comes from TripDetails (just that trip's stops)
+  // fetchedStops is the fallback when LeafletMap is used without a stops prop
+  const stops = propStops ?? fetchedStops;
+  
   return (
     <MapContainer center={[36.327, -39.764]} zoom={3} scrollWheelZoom={true}>
       <FitBounds stops={stops} />
