@@ -1,8 +1,11 @@
 import L from "leaflet";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { getAllStops } from "../services/stopServices";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ChevronRightIcon } from "@heroicons/react/16/solid";
 
+//Have to override the leaflet set color for pins with custom divIcon
 const createPinIcon = (color) =>
   L.divIcon({
     className: "",
@@ -16,27 +19,75 @@ const createPinIcon = (color) =>
     popupAnchor: [0, -36],
   });
 
-export const LeafletMap = () => {
-  
-  const [stops, setStops] = useState([]);
+//When stops load, FitBounds calls map.fitBounds() zooming and centering the map to fit all the users pins
+const FitBounds = ({ stops }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (stops.length > 0) {
+      const bounds = stops.map((stop) => [stop.latitude, stop.longitude]);
+      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 5 });
+    }
+  }, [stops, map]);
+  return null;
+};
+
+export const LeafletMap = ({ stops: propStops }) => {
+  // only used when no stops prop is passed (TripList — show all stops)
+  const [fetchedStops, setFetchedStops] = useState([]);
 
   useEffect(() => {
-    getAllStops().then(setStops);
-  }, []);
+    // if stops weren't passed in, fetch all stops (TripList case)
+    // if stops were passed in (TripDetails), skip the fetch — use those directly
+    if (propStops === undefined) {
+      getAllStops().then(setFetchedStops);
+    }
+  }, [propStops]);
 
+  // propStops comes from TripDetails (just that trip's stops)
+  // fetchedStops is the fallback when LeafletMap is used without a stops prop
+  const stops = propStops ?? fetchedStops;
+  
   return (
-    <MapContainer center={[36.327, -39.764]} zoom={3} scrollWheelZoom={false}>
+    <MapContainer center={[36.327, -39.764]} zoom={3} scrollWheelZoom={true}>
+      <FitBounds stops={stops} />
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url={`https://api.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=${import.meta.env.VITE_THUNDERFOREST_API_KEY}`}
+        maxZoom={22}
       />
       {stops.map((stop) => (
-        <Marker key={stop.id} position={[stop.latitude, stop.longitude]} icon={createPinIcon(stop.trip_color)}>
+        <Marker
+          key={stop.id}
+          position={[stop.latitude, stop.longitude]}
+          //call createPinIcon function and pass it the trip_color
+          icon={createPinIcon(stop.trip_color)}
+        >
           <Popup>
-            <div className="font font-bold">
-              {stop.trip_name}
+            <p className="flex justify-center font-bold">{stop.name}</p>
+            <p>
+              {stop.city}, {stop.country} -{" "}
+              {new Date(stop.visited_date).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </p>
+            <p className="">Part of: {stop.trip_name}</p>
+            <div className="flex">
+              {stop.categories?.map((category) => (
+                <div
+                  key={category.id}
+                  className="border rounded-md px-0.5 mx-0.5"
+                >
+                  {category.name}
+                </div>
+              ))}
             </div>
-            {stop.name}</Popup>
+            <Link to={`/trips/${stop.trip_id}`} className="flex pt-4">
+              View trip details
+              <ChevronRightIcon className="w-4 h-4" />
+            </Link>
+          </Popup>
         </Marker>
       ))}
     </MapContainer>

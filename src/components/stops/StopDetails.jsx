@@ -4,6 +4,7 @@ import { deleteStop, getStopById } from "../services/stopServices";
 import { ChevronLeftIcon } from "@heroicons/react/16/solid";
 import { DeleteDialog } from "../ui/DeleteDialog";
 import { StopForm } from "./StopForm";
+import { LeafletMap } from "../ui/leaflet";
 
 export const StopDetails = () => {
   const { id, stopId } = useParams();
@@ -105,10 +106,6 @@ export const StopDetails = () => {
       <div className="flex justify-center border border-dashed rounded-md p-2 mt-20">
         {" "}
         Place Holder for Photos{" "}
-      </div>
-      <div className="flex justify-center border border-dashed rounded-md p-2 mt-4">
-        {" "}
-        Place Holder for Map{" "}
       </div>
       <StopForm isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} stopToEdit={stop} onStopSaved={refetchStop}/>
     </div>
