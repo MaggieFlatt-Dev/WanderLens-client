@@ -48,7 +48,7 @@ export const LeafletMap = ({ stops: propStops }) => {
   const stops = propStops ?? fetchedStops;
   
   return (
-    <MapContainer center={[36.327, -39.764]} zoom={3} scrollWheelZoom={true}>
+    <MapContainer center={[36.327, -39.764]} zoom={3} scrollWheelZoom={false}>
       <FitBounds stops={stops} />
       <TileLayer
         attribution='&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
