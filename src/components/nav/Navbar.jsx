@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom"
 export const NavBar = () => {
     const navigate = useNavigate()
     return (
-        <ul className="flex items-center gap-4 px-6 py-4 bg-white shadow list-none">
+        <ul className="flex items-center gap-4 px-6 py-4 bg-blue shadow list-none">
             {
                 (localStorage.getItem("WanderLens_token") !== null) ?
                     <>
