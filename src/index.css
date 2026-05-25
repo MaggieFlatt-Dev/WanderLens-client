@@ -5,6 +5,14 @@
   z-index: 1000;
 }
 
+@theme {
+  --color-bluePurple: #576193;
+  --color-blue: #457297;
+  --color-redMaroon: #935A5E;
+  --color-mustard: #B77849;
+  --color-offWhite: #D9DAD3;
+}
+
 .custom-small-modal {
   position: absolute;
   top: 50%;
