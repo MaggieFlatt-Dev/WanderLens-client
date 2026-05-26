@@ -77,8 +77,9 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
       : createTrip(tripData);
 
     // after save: tell the parent to re-fetch so it shows fresh data, then close the modal
-    apiCall.then(() => {
-      onTripSaved()
+    //pass the newly created trip for StopForm
+    apiCall.then((savedTrip) => {
+      onTripSaved(savedTrip)
       handleCancel()
     })
     }

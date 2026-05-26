@@ -4,10 +4,13 @@ import { getTrips } from "../services/tripServices";
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
 import { Link } from "react-router-dom";
 import { LeafletMap } from "../ui/leaflet";
+import { StopForm } from "../stops/StopForm";
 
 export const TripList = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [trips, setTrips] = useState([]);
+  //Add new trip os StopForm knows which trip to add stop to
+  const [newTrip, setNewTrip] = useState(null)
 
   const fetchTrips = () => {
     getTrips().then(setTrips);
@@ -30,7 +33,20 @@ export const TripList = () => {
         <TripForm
           isOpen={modalIsOpen}
           onClose={() => setModalIsOpen(false)}
-          onTripSaved={fetchTrips}
+          //On save, the list refreshes AND newTrip gets set, which will open StopForm
+          onTripSaved={(savedTrip) => {
+            fetchTrips();
+            setNewTrip(savedTrip)
+           }}
+        />
+        <StopForm
+          isOpen={Boolean(newTrip)}
+          onClose={() => setNewTrip(null)}
+          tripId={newTrip?.id}
+          onStopSaved={() => {
+            fetchTrips();
+            setNewTrip(null)
+           }}
         />
       </div>
       <div className="w-full flex justify-center">
