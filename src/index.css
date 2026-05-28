@@ -16,6 +16,8 @@
   --color-lightCaramel: #F7ddbb;
   --color-earthGreen: #626F47;
   --color-lightGreen: #A4B465;
+  --color-lightCream: #fdf8f1;
+
 }
 
 .custom-small-modal {
@@ -41,4 +43,9 @@
 
 .mediumButton {
     @apply bg-lunarGold border border-mustard rounded px-8 text-darkBrown text-sm font-medium py-2 antialiased hover:bg-lunarGoldHover justify-center mt-5
+}
+
+.custom-popup-bg .leaflet-popup-content-wrapper,
+.custom-popup-bg .leaflet-popup-tip {
+  @apply bg-lightCream;
 }
