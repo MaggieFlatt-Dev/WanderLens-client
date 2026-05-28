@@ -63,10 +63,10 @@ export const LeafletMap = ({ stops: propStops }) => {
           icon={createPinIcon(stop.trip_color)}
         >
           <Popup className="custom-popup-bg">
-            <p className="flex justify-center font-bold text-lg text-earthGreen">
+            <p className="flex justify-center font-bold text-lg text-earthGreen antialiased">
               {stop.name}
             </p>
-            <p className="text-darkBrown font-medium">
+            <p className="text-darkBrown font-medium antialiased">
               {stop.city}, {stop.country} -{" "}
               {new Date(stop.visited_date).toLocaleDateString("en-US", {
                 month: "long",
@@ -74,18 +74,24 @@ export const LeafletMap = ({ stops: propStops }) => {
                 year: "numeric",
               })}
             </p>
-            <p className="text-darkBrown font-medium">Part of: {stop.trip_name}</p>
+            <p className="text-darkBrown font-medium antialiased">
+              Part of: {stop.trip_name}
+            </p>
             <div className="flex">
               {stop.categories?.map((category) => (
                 <div
                   key={category.id}
-                  className="border bg-lightGreen text-darkBrown rounded-md px-0.5 mx-0.5"
+                  className="border bg-lightGreen text-darkBrown antialiased rounded-md px-0.5 mx-0.5"
                 >
                   {category.name}
                 </div>
               ))}
             </div>
-            <Link to={`/trips/${stop.trip_id}`} className="flex pt-4 !text-earthGreen hover:!text-lunarGoldHover">
+            <Link
+              to={`/trips/${stop.trip_id}`}
+              className="flex pt-4 !text-earthGreen hover:!text-lunarGoldHover
+              antialiased"
+            >
               View trip details
               <ChevronRightIcon className="w-4 h-4" />
             </Link>
