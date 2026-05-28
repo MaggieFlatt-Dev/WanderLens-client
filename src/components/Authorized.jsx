@@ -5,7 +5,7 @@ export const Authorized = () => {
   if (localStorage.getItem("WanderLens_token")) {
     return <>
       <NavBar />
-      <main className="p-4 bg-mustard">
+      <main className="pt-4 bg-earthGreen min-h-screen w-full">
         <Outlet />
       </main>
     </>
