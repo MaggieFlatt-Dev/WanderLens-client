@@ -12,6 +12,7 @@
   --color-lunarGoldHover:  #D49B38;
   --color-cream: #F5ECD5;
   --color-caramel: #F0BB78;
+  --color-darkBrown: #483824;
   --color-lightCaramel: #F7ddbb;
   --color-earthGreen: #626F47;
   --color-lightGreen: #A4B465;
@@ -32,4 +33,12 @@
 
 .leaflet-container {
 @apply w-11/12 h-150 border rounded-md mt-10
+}
+
+.smallButton {
+  @apply bg-lunarGold border border-mustard rounded px-3 text-darkBrown font-medium py-2 antialiased hover:bg-lunarGoldHover
+}
+
+.mediumButton {
+    @apply bg-lunarGold border border-mustard rounded px-8 text-darkBrown text-sm font-medium py-2 antialiased hover:bg-lunarGoldHover justify-center mt-5
 }
