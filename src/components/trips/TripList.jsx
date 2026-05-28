@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { TripForm } from "./TripForm";
 import { getTrips } from "../services/tripServices";
+import { getAllStops } from "../services/stopServices";
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
 import { Link } from "react-router-dom";
 import { LeafletMap } from "../ui/leaflet";
@@ -9,6 +10,7 @@ import { StopForm } from "../stops/StopForm";
 export const TripList = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [trips, setTrips] = useState([]);
+  const [stops, setStops] = useState([])
   //Add new trip os StopForm knows which trip to add stop to
   const [newTrip, setNewTrip] = useState(null)
 
@@ -16,8 +18,14 @@ export const TripList = () => {
     getTrips().then(setTrips);
   };
 
+  //need fetchStops for Map to update on addition/first trip created
+  const fetchStops = () => {
+    getAllStops().then(setStops)
+   }
+
   useEffect(() => {
     fetchTrips();
+    fetchStops();
   }, []);
 
   return (
@@ -25,7 +33,7 @@ export const TripList = () => {
       <div className="flex justify-between px-12 pt-4">
         <h2 className="text-2xl font-bold text-cream antialiased">My Trips</h2>
         <button
-          className="bg-lunarGold border border-mustard rounded px-3 py-2 text-md text-spaceNavy  antialiased hover:bg-lunarGoldHover"
+          className="smallButton"
           onClick={() => setModalIsOpen(true)}
         >
           + New Trip
@@ -45,12 +53,13 @@ export const TripList = () => {
           tripId={newTrip?.id}
           onStopSaved={() => {
             fetchTrips();
+            fetchStops();
             setNewTrip(null)
            }}
         />
       </div>
       <div className="w-full flex justify-center">
-        <LeafletMap/>
+        <LeafletMap stops={stops}/>
       </div>
       <div className="mt-10 px-10">
         {trips.length ? (
@@ -79,11 +88,11 @@ export const TripList = () => {
           ))
         ) : (
             <div className="flex flex-col items-center">
-          <div className="text-4xl text-center">
+          <div className="text-4xl text-cream text-center antialiased">
                 Welcome! Create your first trip to get started
                 <div className="flex justify-center">
             <button
-              className="flex border border-gray-300 rounded w-50 px-3 py-2 text-sm justify-center mt-5"
+              className="mediumButton"
               onClick={() => setModalIsOpen(true)}
             >
               + New Trip
