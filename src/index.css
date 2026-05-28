@@ -6,11 +6,15 @@
 }
 
 @theme {
-  --color-bluePurple: #576193;
-  --color-blue: #457297;
-  --color-redMaroon: #935A5E;
   --color-mustard: #B77849;
   --color-offWhite: #D9DAD3;
+  --color-lunarGold: #E8B14C;
+  --color-lunarGoldHover:  #D49B38;
+  --color-cream: #F5ECD5;
+  --color-caramel: #F0BB78;
+  --color-lightCaramel: #F7ddbb;
+  --color-earthGreen: #626F47;
+  --color-lightGreen: #A4B465;
 }
 
 .custom-small-modal {
