@@ -45,19 +45,22 @@ export const TripDetails = () => {
 
   return (
     <div>
-      <Link to={`/`} className="flex text-md mb-10">
-        <ChevronLeftIcon className="w-5 h-5 text-gray-400" />
+      <Link
+        to={`/`}
+        className="flex text-md text-cream hover:text-caramel  antialiased mb-10"
+      >
+        <ChevronLeftIcon className="w-5 h-5 mt-0.5 text-cream hover:text-caramel antialiased" />
         Back to My Trips
       </Link>
-      <div className="flex flex-col pl-2 pb-8 border rounded-md ">
-        <div className="flex pt-2 text-2xl">
+      <div className="flex flex-col pl-2 mx-10 pb-8 border rounded-md bg-cream">
+        <div className="flex pt-2 ml-2 text-2xl text-earthGreen antialiased">
           {trip.name}
-          <div className="flex ml-auto m-2 gap-2 text-sm">
-            <div className="border rounded-md px-4">
+          <div className="flex ml-auto m-2 gap-2 text-sm antialiased">
+            <div className="smallButton">
               {/* sets isEditModalOpen to true, which triggers the TripForm at the bottom to open */}
               <button onClick={() => setIsEditModalOpen(true)}> Edit</button>
             </div>
-            <div className="border rounded-md px-4">
+            <div className="cancelButton">
               <button onClick={() => setIsDeleteConfirmOpen(true)}>
                 Delete
               </button>
@@ -71,12 +74,8 @@ export const TripDetails = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-start gap-3 mt-2 pb-2">
-          <div
-            className="w-8 h-8 rounded-full flex-shrink-0 mt-2"
-            style={{ backgroundColor: trip.color }}
-          />
-          <div className="flex flex-col text-sm">
+        <div className="flex items-start gap-3  pb-2 pl-4">
+          <div className="flex flex-col text-sm text-mustard antialiased">
             <p>
               {trip.trip_type?.name} |{" "}
               {new Date(trip.start_date).toLocaleDateString("en-US", {
@@ -92,7 +91,7 @@ export const TripDetails = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center ">
+      <div className="detail-map flex justify-center ">
         {trip.stops && (
           <LeafletMap
             stops={trip.stops.map((stop) => ({
@@ -103,10 +102,12 @@ export const TripDetails = () => {
           />
         )}
       </div>
-      <div className="flex flex-row mt-10 mb-4">
-        <div className="">Stops ({trip.stops?.length})</div>
+      <div className="flex flex-row m-10 mb-4">
+        <div className="text-lg text-cream antialiased">
+          Stops ({trip.stops?.length})
+        </div>
         <button
-          className="border rounded-md px-4 ml-auto"
+          className="smallButton ml-auto"
           onClick={() => setModalIsOpen(true)}
         >
           + Add Stop
@@ -115,15 +116,16 @@ export const TripDetails = () => {
       {/* relative path "stops/:id" resolves to /trips/:tripId/stops/:stopId */}
       {trip.stops?.map((stop) => (
         <Link to={`stops/${stop.id}`} key={stop.id}>
-          <div key={stop.id} className="flex flex-col border rounded-md mb-4">
+          <div
+            key={stop.id}
+            className="flex flex-col border bg-cream hover:bg-lightCaramel rounded-md mb-4 mx-10"
+          >
             <div className="flex m-2 items-center">
-              <div
-                className="w-2 h-2 rounded-full flex-shrink-0"
-                style={{ backgroundColor: trip.color }}
-              />
               <div>
-                <p className="ml-2 font-semibold">{stop.name}</p>
-                <p className="text-sm pl-4">
+                <p className="ml-1 font-semibold text-earthGreen antialiased">
+                  {stop.name}
+                </p>
+                <p className="text-sm text-mustard pl-4">
                   {stop.city ? `${stop.city}, ` : ""}
                   {stop.country} - {""}
                   {new Date(stop.visited_date).toLocaleDateString("en-US", {
@@ -133,15 +135,18 @@ export const TripDetails = () => {
                   })}
                 </p>
               </div>
-              <div className="flex ml-auto text-sm p-3">
+              <div className="flex ml-auto text-sm antialiased pr-8">
                 {stop.categories?.map((category) => (
-                  <p key={category.id} className="border rounded-md p-1 ml-2">
+                  <p
+                    key={category.id}
+                    className="border rounded-md p-1 ml-2 border bg-lightGreen text-darkBrown antialiased"
+                  >
                     {category.name}
                   </p>
                 ))}
               </div>
             </div>
-            <ChevronRightIcon className="w-5 h-5 ml-auto mb-2 text-gray-400" />
+            <ChevronRightIcon className="w-5 h-5 ml-auto mb-3 text-mustard antialiased" />
           </div>
         </Link>
       ))}
