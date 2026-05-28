@@ -4,7 +4,8 @@ import { deleteStop, getStopById } from "../services/stopServices";
 import { ChevronLeftIcon } from "@heroicons/react/16/solid";
 import { DeleteDialog } from "../ui/DeleteDialog";
 import { StopForm } from "./StopForm";
-import { LeafletMap } from "../ui/leaflet";
+import { PhotoUploadForm } from "./PhotoUploadForm";
+import { deletePhoto } from "../services/photoServices";
 
 export const StopDetails = () => {
   const { id, stopId } = useParams();
@@ -13,6 +14,7 @@ export const StopDetails = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const navigate = useNavigate();
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
   // fetch the stop when the component loads or the id in the URL changes
   useEffect(() => {
@@ -37,6 +39,12 @@ export const StopDetails = () => {
     });
   };
 
+  //handle deleting a photo
+  const handleDeletePhoto = (photoId) => {
+    if (window.confirm("Delete this photo?")) {
+      deletePhoto(photoId).then(refetchStop);
+    }
+  };
   return (
     <div>
       <Link to={`/trips/${id}`} className="flex text-md mb-10">
@@ -71,7 +79,8 @@ export const StopDetails = () => {
             style={{ backgroundColor: stop.trip_color }}
           />
           <div className="flex flex-col text-sm">
-            {stop.city ? `${stop.city}, ` : ""}{stop.country}
+            {stop.city ? `${stop.city}, ` : ""}
+            {stop.country}
           </div>
         </div>
         <div className="flex gap-40 mt-8">
@@ -103,11 +112,56 @@ export const StopDetails = () => {
           <div>{stop.description}</div>
         </div>
       </div>
-      <div className="flex justify-center border border-dashed rounded-md p-2 mt-20">
-        {" "}
-        Place Holder for Photos{" "}
+      {/* Photo gallery section */}
+      <div className="mt-6">
+        <div className="flex flex-row justify-between items-center mb-4">
+          <h3 className="text-xl font-bold">
+            Photos ({stop.photos?.length || 0})
+          </h3>
+          <button
+            onClick={() => setIsPhotoModalOpen(true)}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            + Add Photo
+          </button>
+        </div>
+
+        {stop.photos && stop.photos.length > 0 ? (
+          <div className="grid grid-cols-3 gap-3">
+            {stop.photos.map((photo) => (
+              <div key={photo.id} className="relative group">
+                <img
+                  src={`http://localhost:8000${photo.image}`}
+                  alt=""
+                  className="rounded bg-gray-100"
+                />
+                <button
+                  onClick={() => handleDeletePhoto(photo.id)}
+                  className="absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 transition"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500 italic">
+            No photos yet. Add one to get started.
+          </p>
+        )}
       </div>
-      <StopForm isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} stopToEdit={stop} onStopSaved={refetchStop}/>
+      <StopForm
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        stopToEdit={stop}
+        onStopSaved={refetchStop}
+      />
+      <PhotoUploadForm
+        isOpen={isPhotoModalOpen}
+        onClose={() => setIsPhotoModalOpen(false)}
+        stopId={stop.id}
+        onPhotoUploaded={refetchStop}
+      />
     </div>
   );
 };
