@@ -40,6 +40,9 @@
 .leaflet-container {
 @apply w-11/12 h-150 border rounded-md mt-10
 }
+.detail-map .leaflet-container {
+  @apply h-100
+}
 
 .smallButton {
   @apply bg-lunarGold border border-mustard rounded px-3 text-darkBrown font-medium py-2 antialiased hover:bg-lunarGoldHover
