@@ -1,16 +1,9 @@
-const API_BASE = "http://localhost:8000";
-
-const getAuthHeaders = () => ({
-  Authorization: `Token ${localStorage.getItem("auth_token")}`,
-});
-
 export const createPhoto = (formData) => {
-  return fetch(`${API_BASE}/photos/`, {
+  return fetch(`http://localhost:8000/api/photos`, {
     method: "POST",
     headers: {
-      ...getAuthHeaders(),
-      // NOTE: Do NOT set Content-Type — the browser sets it automatically
-      // for FormData (with the multipart boundary). Setting it manually breaks the upload.
+      //Don't need content-type
+             Authorization: "Token " + JSON.parse(localStorage.getItem("WanderLens_token")).token,
     },
     body: formData,
   }).then((res) => {
@@ -24,9 +17,12 @@ export const createPhoto = (formData) => {
 };
 
 export const deletePhoto = (photoId) => {
-  return fetch(`${API_BASE}/photos/${photoId}`, {
+  return fetch(`http://localhost:8000/api/photos/${photoId}`, {
     method: "DELETE",
-    headers: getAuthHeaders(),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Token " + JSON.parse(localStorage.getItem("WanderLens_token")).token,
+    },
   }).then((res) => {
     if (!res.ok) {
       const error = new Error("Photo delete failed");
