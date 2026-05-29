@@ -5,9 +5,11 @@ import { createPhoto } from "../services/photoServices";
 export const PhotoUploadForm = ({ isOpen, onClose, stopId, onPhotoUploaded }) => {
   //file uploads aren't instant
   const [isUploading, setIsUploading] = useState(false);
+  const [selectedFileName, setSelectedFileName] = useState(null);
 
   const handleCancel = () => {
     setIsUploading(false);
+    setSelectedFileName(null);
     onClose();
   };
 
@@ -45,30 +47,33 @@ export const PhotoUploadForm = ({ isOpen, onClose, stopId, onPhotoUploaded }) =>
       onRequestClose={onClose}
       ariaHideApp={false}
     >
-      <h2 className="text-2xl font-bold mb-4">Add Photo</h2>
+      <h2 className="text-2xl text-earthGreen font-bold mb-4">Add Photo</h2>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <label
-            className="text-sm font-medium text-gray-700"
             htmlFor="inputPhoto"
+            className="cursor-pointer inline-flex items-center gap-2 border-2 border-dashed border-darkBrown rounded-md px-4 py-3 text-sm font-medium text-darkBrown hover:bg-offWhite transition"
           >
-            Choose a photo <span className="text-red-500">*</span>
+            📷 Choose a photo
           </label>
           <input
             type="file"
             id="inputPhoto"
             name="photo"
-            //prevent being able to upload a PDF or text file
             accept="image/*"
             required
-            className="text-sm"
+            className="hidden"
+            onChange={(e) => setSelectedFileName(e.target.files[0]?.name || null)}
           />
+          <p className="text-xs text-darkBrown">
+            {selectedFileName ? `Selected: ${selectedFileName}` : "No file chosen"}
+          </p>
         </fieldset>
         <div className="flex flex-row justify-end gap-x-6">
           <button
             type="submit"
             disabled={isUploading}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
+            className="smallButton"
           >
             {isUploading ? "Uploading..." : "Upload"}
           </button>
@@ -76,7 +81,7 @@ export const PhotoUploadForm = ({ isOpen, onClose, stopId, onPhotoUploaded }) =>
             type="button"
             onClick={handleCancel}
             disabled={isUploading}
-            className="bg-red-500 text-white px-4 py-2 rounded disabled:opacity-50"
+            className="cancelButton"
           >
             Cancel
           </button>
