@@ -29,7 +29,7 @@ export const TripList = () => {
   }, []);
 
   return (
-    <div className="bg-earthGreen min-h-screen">
+    <div className="bg-earthGreen min-h-screen pb-12">
       <div className="flex justify-between px-12 pt-4">
         <h2 className="text-2xl font-bold text-cream antialiased">My Trips</h2>
         <button

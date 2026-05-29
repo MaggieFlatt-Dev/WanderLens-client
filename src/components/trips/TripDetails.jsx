@@ -44,7 +44,7 @@ export const TripDetails = () => {
   if (!trip) return <p>Loading...</p>;
 
   return (
-    <div>
+    <div className="pb-12">
       <Link
         to={`/`}
         className="flex text-md text-cream hover:text-caramel  antialiased mb-10"
