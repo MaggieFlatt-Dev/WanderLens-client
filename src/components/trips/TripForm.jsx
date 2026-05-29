@@ -77,8 +77,9 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
       : createTrip(tripData);
 
     // after save: tell the parent to re-fetch so it shows fresh data, then close the modal
-    apiCall.then(() => {
-      onTripSaved()
+    //pass the newly created trip for StopForm
+    apiCall.then((savedTrip) => {
+      onTripSaved(savedTrip)
       handleCancel()
     })
     }
@@ -90,21 +91,21 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
       onRequestClose={onClose}
       ariaHideApp={false}
     >
-      <h2 className="text-2xl font-bold mb-4">{isEditMode ? "Edit Trip" : "Create New Trip"}</h2>
+      <h2 className="text-2xl text-earthGreen antialiased font-bold mb-4">{isEditMode ? "Edit Trip" : "Create New Trip"}</h2>
       {/* key resets uncontrolled inputs when switching between trips — without it defaultValue won't update */}
       <form className="flex flex-col gap-4" key={tripToEdit?.id || 'new'} onSubmit={handleSubmit}>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-earthGreen antialiased"
             htmlFor="inputTitle"
           >
-            Trip Name <span className="text-red-500">*</span>
+            Trip Name <span className="text-red">*</span>
           </div>
           <input
             type="text"
             id="inputTitle"
             defaultValue={tripToEdit?.name || ""}
-            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-mustard rounded px-3 py-2 text-sm antialiased bg-white focus:outline-none focus:ring-2 focus:ring-lunarGold bg-"
             placeholder="e.g. Italy 2026"
             required
             autoFocus
@@ -112,7 +113,7 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
         </fieldset>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-earthGreen antialiased"
             htmlFor="inputDescription"
           >
             Description
@@ -120,21 +121,21 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
           <textarea
             id="inputDescription"
             defaultValue={tripToEdit?.description || ""}
-            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-mustard rounded px-3 py-2 text-sm antialiased bg-white focus:outline-none focus:ring-2 focus:ring-lunarGold"
             placeholder="Trip Description"
           />
         </fieldset>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-earthGreen antialiased"
             htmlFor="inputTripType"
           >
-            Trip Type <span className="text-red-500">*</span>
+            Trip Type <span className="text-red">*</span>
           </div>
           <select
             id="inputTripType"
             defaultValue={tripToEdit?.trip_type?.id || ""}
-            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-mustard rounded px-3 py-2 text-sm antialiased bg-white text-earthGreen focus:outline-none focus:ring-2 focus:ring-lunarGold"
             required
           >
             <option value="">Select a Trip Type</option>
@@ -148,15 +149,15 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
         <div className="flex flex-row items-center items-end gap-x-35">
           <fieldset className="relative">
             <div
-              className="text-sm font-medium text-gray-700 pl-5"
+              className="text-sm font-medium text-earthGreen antialiased pl-2"
               htmlFor="inputColorPicker"
             >
-              Color: <span className="text-red-500">*</span>
+              Color: <span className="text-red">*</span>
             </div>
             <button
               type="button"
               onClick={() => setColorPickerIsOpen(!colorPickerIsOpen)}
-              className="ml-2 w-8 h-8 rounded border border-gray-300"
+              className="ml-2 w-8 h-8 rounded border border-mustard"
               style={{ backgroundColor: selectedColor?.hex ?? "#ffffff" }}
             />
             {colorPickerIsOpen && (
@@ -173,14 +174,14 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
           </fieldset>
           <fieldset>
             <div
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium text-earthGreen antialiased pl-2"
               htmlFor="inputStartDate"
             >
               Start Date:
-              <span className="text-red-500">*</span>
+              <span className="text-red">*</span>
             </div>
             <DatePicker
-              className="ml-2 border border-gray-300 rounded w-25"
+              className="ml-2 border border-mustard rounded bg-white w-25"
               selected={selectedDate}
               onChange={handleDateChange}
               dateFormat="MM/dd/yyyy"
@@ -190,31 +191,32 @@ export const TripForm = ({ isOpen, onClose, onTripSaved, tripToEdit }) => {
         </div>
         <fieldset className="mt-4">
           <div
-            className="text-sm font-medium text-gray-700 pl-5"
+            className="text-sm font-medium text-earthGreen antialiased pl-2"
             htmlFor="inputColorPicker"
           >
+            
             Make this trip private?
           </div>
           {/* checkbox is controlled so its checked state stays in sync with isPrivate */}
           <input
-            className="ml-5"
+            className="ml-2"
             type="checkbox"
             id="inputPrivate"
             checked={isPrivate}
             onChange={(e) => setIsPrivate(e.target.checked)}
-          />
+            />
         </fieldset>
         <div className="flex flex-row justify-end gap-x-6">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="smallButton"
           >
             {isEditMode ? "Save Changes" : "Create Trip"}
           </button>
           <button
             type="button"
             onClick={handleCancel}
-            className="bg-red-500 text-white px-4 py-2 rounded"
+            className="cancelButton"
           >
             Cancel
           </button>

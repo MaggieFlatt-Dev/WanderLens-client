@@ -1,8 +1,26 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
+
 .ReactModal__Overlay {
   z-index: 1000;
+}
+
+@theme {
+  --color-mustard: #B77849;
+  --color-offWhite: #D9DAD3;
+  --color-lunarGold: #E8B14C;
+  --color-lunarGoldHover:  #D49B38;
+  --color-cream: #F5ECD5;
+  --color-caramel: #F0BB78;
+  --color-darkBrown: #483824;
+  --color-lightCaramel: #F7ddbb;
+  --color-earthGreen: #626F47;
+  --color-lightGreen: #A4B465;
+  --color-lightCream: #fdf8f1;
+  --color-red: #9B4444;
+  --color-darkRed: #7c3636;
+
 }
 
 .custom-small-modal {
@@ -11,8 +29,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 600px;
-  background-color: #fff;
+  background-color: #fdf8f1;
   border: solid;
+  border-color: #E8B14C;
   border-radius: 8px;
   padding: 24px;
   outline: none;
@@ -20,4 +39,28 @@
 
 .leaflet-container {
 @apply w-11/12 h-150 border rounded-md mt-10
+}
+.detail-map .leaflet-container {
+  @apply h-100
+}
+
+.smallButton {
+  @apply bg-lunarGold border border-mustard rounded px-3 text-darkBrown font-medium py-2 antialiased hover:bg-lunarGoldHover
+}
+
+.cancelButton {
+  @apply bg-red border border-darkRed rounded px-3 text-cream font-medium py-2 antialiased hover:bg-darkRed
+}
+
+.mediumButton {
+    @apply bg-lunarGold border border-mustard rounded px-8 text-darkBrown text-sm font-medium py-2 antialiased hover:bg-lunarGoldHover justify-center mt-5
+}
+
+.largeButton {
+    @apply bg-lunarGold border border-mustard rounded px-26 text-darkBrown text-sm font-medium py-2 antialiased justify-center hover:bg-lunarGoldHover justify-center mt-5
+}
+
+.custom-popup-bg .leaflet-popup-content-wrapper,
+.custom-popup-bg .leaflet-popup-tip {
+  @apply bg-lightCream;
 }
