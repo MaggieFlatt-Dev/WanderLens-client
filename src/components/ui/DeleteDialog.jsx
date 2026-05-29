@@ -10,18 +10,18 @@ export const DeleteDialog = ({
       onRequestClose={onClose}
       ariaHideApp={false}
     >
-      <h2 className="text-xl font-bold mb-2">{title}</h2>
-      <p className="text-gray-600 mb-6">{message}</p>
+      <h2 className="text-xl text-earthGreen font-bold antialiased mb-2">{title}</h2>
+      <p className="text-darkBrown antialiased mb-6">{message}</p>
       <div className="flex flex-row justify-end gap-x-4">
         <button
           onClick={onClose}
-          className="bg-white border border-gray-300 px-4 py-2 rounded"
+          className="smallButton"
         >
           {cancelLabel}
           </button>
         <button
           onClick={onConfirm}
-          className="bg-red-500 text-white px-4 py-2 rounded"
+          className="cancelButton"
         >
             {confirmLabel}
         </button>
