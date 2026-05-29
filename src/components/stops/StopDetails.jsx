@@ -46,7 +46,7 @@ export const StopDetails = () => {
     }
   };
   return (
-    <div>
+    <div className="pb-12">
       <Link
         to={`/trips/${id}`}
         className="flex text-md text-cream hover:text-lunarGold antialiased mb-10"
@@ -138,7 +138,7 @@ export const StopDetails = () => {
                 <img
                   src={`http://localhost:8000${photo.image}`}
                   alt=""
-                  className="rounded border border-offWhite"
+                  className="rounded border border-offWhite w-115 h-140"
                 />
                 <button
                   onClick={() => handleDeletePhoto(photo.id)}
