@@ -74,8 +74,8 @@ export const TripDetails = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-start gap-3  pb-2 pl-4">
-          <div className="flex flex-col text-sm text-mustard antialiased">
+        <div className="flex items-start gap-3  pb-2 pl-8">
+          <div className="flex flex-col text-md text-mustard antialiased">
             <p>
               {trip.trip_type?.name} |{" "}
               {new Date(trip.start_date).toLocaleDateString("en-US", {
