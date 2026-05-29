@@ -56,6 +56,10 @@
     @apply bg-lunarGold border border-mustard rounded px-8 text-darkBrown text-sm font-medium py-2 antialiased hover:bg-lunarGoldHover justify-center mt-5
 }
 
+.largeButton {
+    @apply bg-lunarGold border border-mustard rounded px-26 text-darkBrown text-sm font-medium py-2 antialiased justify-center hover:bg-lunarGoldHover justify-center mt-5
+}
+
 .custom-popup-bg .leaflet-popup-content-wrapper,
 .custom-popup-bg .leaflet-popup-tip {
   @apply bg-lightCream;
