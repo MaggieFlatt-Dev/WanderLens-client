@@ -126,7 +126,7 @@ export const StopForm = ({
       onRequestClose={handleCancel}
       ariaHideApp={false}
     >
-      <h2 className="text-2xl font-bold mb-4">
+      <h2 className="text-2xl text-earthGreen antialiased font-bold mb-4">
         {isEditMode ? "Edit Stop" : "Create New Stop"}
       </h2>
       {/* key resets uncontrolled inputs when switching between stops — without it defaultValue won't update */}
@@ -137,29 +137,29 @@ export const StopForm = ({
       >
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-earthGreen antialiased"
             htmlFor="inputTitle"
           >
-            Stop Name <span className="text-red-500">*</span>
+            Stop Name <span className="text-red">*</span>
           </div>
           <input
             type="text"
             id="inputTitle"
             defaultValue={stopToEdit?.name || ""}
-            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-mustard rounded px-3 py-2 text-sm antialiased focus:outline-none focus:ring-2 focus:ring-lunarGold bg-white"
             placeholder="e.g. New York"
             required
             autoFocus
           />
         </fieldset>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
-          <div className="text-sm font-medium text-gray-700">
+          <div className="text-sm font-medium text-earthGreen antialiased">
             Location Search
-            <span className="text-red-500">*</span>
+            <span className="text-red">*</span>
           </div>
           <div className="flex gap-2">
             <input
-              className="border border-gray-300 rounded px-3 py-2 w-108 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-mustard rounded px-3 py-2 w-108 text-sm antialiased focus:outline-none focus:ring-2 focus:ring-lunarGold bg-white"
               value={search}
               required
               onChange={(e) => setSearch(e.target.value)}
@@ -174,12 +174,12 @@ export const StopForm = ({
             <button
               type="button"
               onClick={handleSearch}
-              className="border border-gray-300 rounded px-3 py-2 text-sm"
+              className="border border-mustard bg-lunarGold hover:bg-lunarGoldHover rounded px-3 py-2 text-sm text-darkBrown antialiased"
             >
               Search
             </button>
           </div>
-          <div className="">
+          <div>
             {searchLocations.map((searchLocation) => (
               <button
                 type="button"
@@ -198,7 +198,7 @@ export const StopForm = ({
         </fieldset>
         <fieldset className="flex flex-col gap-1 border-0 p-0">
           <div
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-earthGreen antialiased"
             htmlFor="inputDescription"
           >
             Description
@@ -206,20 +206,20 @@ export const StopForm = ({
           <textarea
             id="inputDescription"
             defaultValue={stopToEdit?.description || ""}
-            className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-mustard rounded px-3 py-2 text-sm antialiased focus:outline-none focus:ring-2 focus:ring-lunarGold bg-white"
             placeholder="Stop Description"
           />
         </fieldset>
         <fieldset>
           <div
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-earthGreen antialiased"
             htmlFor="inputVisitedDate"
           >
             Visited Date:
-            <span className="text-red-500">*</span>
+            <span className="text-red">*</span>
           </div>
           <DatePicker
-            className="ml-2 border border-gray-300 rounded w-25"
+            className="border border-mustard bg-white rounded w-25"
             selected={selectedDate}
             onChange={handleDateChange}
             dateFormat="MM/dd/yyyy"
@@ -228,10 +228,10 @@ export const StopForm = ({
         </fieldset>
         <fieldset className="mt-4">
           <div
-            className="text-sm font-medium text-gray-700 pl-5"
+            className="text-sm font-medium text-earthGreen antialiased"
             htmlFor="inputCategories"
           >
-            Categories(select one or more)
+            Categories (select one or more)
           </div>
           {categories.map((category) => (
             <button
@@ -240,8 +240,8 @@ export const StopForm = ({
               onClick={() => toggleCategory(category.id)}
               className={
                 selectedCategories.includes(category.id)
-                  ? "border rounded-md p-1 m-1  bg-blue-500 text-white"
-                  : "border rounded-md p-1 m-1"
+                  ? "border rounded-md bg-lightGreen p-1 m-1 text-darkBrown antialiased"
+                  : "border bg-earthGreen rounded-md text-cream antialiased p-1 m-1"
               }
             >
               {category.name}
@@ -251,14 +251,14 @@ export const StopForm = ({
         <div className="flex flex-row justify-end gap-x-6">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="smallButton"
           >
             {isEditMode ? "Save Changes" : "Create Stop"}
           </button>
           <button
             type="button"
             onClick={handleCancel}
-            className="bg-red-500 text-white px-4 py-2 rounded"
+            className="cancelButton"
           >
             Cancel
           </button>

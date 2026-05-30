@@ -46,9 +46,9 @@ export const LeafletMap = ({ stops: propStops }) => {
   // propStops comes from TripDetails (just that trip's stops)
   // fetchedStops is the fallback when LeafletMap is used without a stops prop
   const stops = propStops ?? fetchedStops;
-  
+
   return (
-    <MapContainer center={[36.327, -39.764]} zoom={3} scrollWheelZoom={true}>
+    <MapContainer center={[36.327, -39.764]} zoom={3} scrollWheelZoom={false}>
       <FitBounds stops={stops} />
       <TileLayer
         attribution='&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -62,9 +62,11 @@ export const LeafletMap = ({ stops: propStops }) => {
           //call createPinIcon function and pass it the trip_color
           icon={createPinIcon(stop.trip_color)}
         >
-          <Popup>
-            <p className="flex justify-center font-bold">{stop.name}</p>
-            <p>
+          <Popup className="custom-popup-bg">
+            <p className="flex justify-center font-bold text-lg text-earthGreen antialiased">
+              {stop.name}
+            </p>
+            <p className="text-darkBrown font-medium antialiased">
               {stop.city}, {stop.country} -{" "}
               {new Date(stop.visited_date).toLocaleDateString("en-US", {
                 month: "long",
@@ -72,18 +74,24 @@ export const LeafletMap = ({ stops: propStops }) => {
                 year: "numeric",
               })}
             </p>
-            <p className="">Part of: {stop.trip_name}</p>
+            <p className="text-darkBrown font-medium antialiased">
+              Part of: {stop.trip_name}
+            </p>
             <div className="flex">
               {stop.categories?.map((category) => (
                 <div
                   key={category.id}
-                  className="border rounded-md px-0.5 mx-0.5"
+                  className="border bg-lightGreen text-darkBrown antialiased rounded-md px-0.5 mx-0.5"
                 >
                   {category.name}
                 </div>
               ))}
             </div>
-            <Link to={`/trips/${stop.trip_id}`} className="flex pt-4">
+            <Link
+              to={`/trips/${stop.trip_id}`}
+              className="flex pt-4 !text-earthGreen hover:!text-lunarGoldHover
+              antialiased"
+            >
               View trip details
               <ChevronRightIcon className="w-4 h-4" />
             </Link>
