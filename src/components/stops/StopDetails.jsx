@@ -70,8 +70,8 @@ export const StopDetails = () => {
                 isOpen={isDeleteConfirmOpen}
                 onClose={() => setIsDeleteConfirmOpen(false)}
                 onConfirm={handleDelete}
-                title="Delete this trip?"
-                message="This will permanently delete the trip and all its stops. This action cannot be undone."
+                title="Delete this stop?"
+                message="This will permanently delete the stop and all its photos. This action cannot be undone."
               />
             </div>
           </div>

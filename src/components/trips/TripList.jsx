@@ -79,7 +79,7 @@ export const TripList = () => {
                       day: "numeric",
                       year: "numeric",
                     })}{" "}
-                    | {""} Stops ({trip?.stops.length})
+                    | {""} Stops ({trip?.stops?.length})
                   </div>
                 </div>
                 <ChevronRightIcon className="ml-auto w-5 h-5 self-center text-mustard" />
