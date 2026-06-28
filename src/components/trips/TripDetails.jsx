@@ -8,7 +8,7 @@ import { DeleteDialog } from "../ui/DeleteDialog";
 import { LeafletMap } from "../ui/leaflet";
 
 export const TripDetails = () => {
-  const [trip, setTrip] = useState({});
+  const [trip, setTrip] = useState(null);
   // controls whether the edit modal is visible set to false so it doesn't show on mount
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
