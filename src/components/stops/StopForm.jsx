@@ -38,7 +38,7 @@ export const StopForm = ({
   useEffect(() => {
     if (stopToEdit) {
       setSelectedDate(
-        stopToEdit.visited_date ? new Date(stopToEdit.visited_date) : null,
+        stopToEdit.visited_date ? new Date(stopToEdit.visited_date + "T00:00:00") : null,
       );
       setSelectedCategories(stopToEdit.categories?.map((c) => c.id) || []);
       setSearch(`${stopToEdit.city}, ${stopToEdit.country}`);
