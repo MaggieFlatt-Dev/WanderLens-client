@@ -23,12 +23,19 @@ export const NavBar = () => {
                                 className="text-offWhite hover:text-lunarGold antialiased"
                                 onClick={() => {
                                     navigate('/')
-                                 } } 
+                                 } }
                             >Home
                             </button>
                         </li>
+                        <li>
+                            <NavLink
+                                className="text-offWhite hover:text-lunarGold antialiased"
+                                to="/photos"
+                            >Photos
+                            </NavLink>
+                        </li>
                     <div className="absolute left-1/2 -translate-x-1/2">
-                    <img src={WanderLensLogo} alt="WanderLens Logo" className=" pt-1 h-20" />
+                    <img src={WanderLensLogo} alt="WanderLens Logo" className="pt-1 h-20" />
                         </div>
                     <li className="ml-auto">
                         <a className="flex text-offWhite antialiased">Welcome, {user.firstName}</a>
