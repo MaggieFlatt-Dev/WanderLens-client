@@ -132,13 +132,13 @@ export const StopDetails = () => {
         </div>
 
         {stop.photos && stop.photos.length > 0 ? (
-          <div className="grid grid-cols-3 gap-3">
+          <div className="columns-3 gap-3">
             {stop.photos.map((photo) => (
-              <div key={photo.id} className="relative group">
+              <div key={photo.id} className="relative group mb-3 break-inside-avoid">
                 <img
                   src={`http://localhost:8000${photo.image}`}
                   alt=""
-                  className="rounded border border-offWhite w-115 h-140"
+                  className="rounded border border-offWhite w-full h-auto"
                 />
                 <button
                   onClick={() => handleDeletePhoto(photo.id)}
